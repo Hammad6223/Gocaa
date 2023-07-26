@@ -16,7 +16,7 @@ ConnectDB();
 app.use('/images', express.static('images'));
 
 
-
+app.use(express.static('images'))
 // Auth Routes 
 app.use('/auth', auth);
 

@@ -51,7 +51,7 @@ import cloudinary from "../../utills/cloudinaryConfig.js";
        //  Edit profile image 
 
        editProfileImage : async  (req,resp,next)=>{
-        console.log(req.file)
+
 
         // check image
         if(!req.file){return next(new errorHandler('Profile image is required',400)); }

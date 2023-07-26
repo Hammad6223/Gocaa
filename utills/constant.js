@@ -18,6 +18,7 @@ import multer from 'multer';
    })
 })
 
+
 // Base Path of cloudinary 
 
 export const cloudinaryPath = 'http://res.cloudinary.com/dx3oigwug/image/upload/v1690184676/'
