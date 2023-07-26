@@ -24,13 +24,9 @@ import bcrypt from 'bcryptjs'
     // Email unique check
 
     try {
-      const user = await User.findOne({ email: req.body.email });
-    
-      if (!user) {
-        return next(errorHandler.wrongCredentials());
-      }
-    
-      // Proceed with further code if the user is found.
+    const user= await User.exists({email: req.body.email});
+    if(user) { return next(new errorHandler('User email already exists',401)); }
+
     }
    catch{
 
