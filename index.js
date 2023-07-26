@@ -16,7 +16,10 @@ ConnectDB();
 app.use('/images', express.static('images'));
 
 
-app.use(express.static('images'))
+app.get("/", (req, res) => {
+    res.send("<h1>Hello to Gocality App API</h1>");
+  });
+
 // Auth Routes 
 app.use('/auth', auth);
 
