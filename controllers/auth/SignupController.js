@@ -23,7 +23,7 @@ import bcrypt from 'bcryptjs'
 
     // Email unique check
    try{
-     await User.exists({email: req.body.email})
+     await User.find({email: req.body.email})
      return next(new errorHandler('User email already exists',401))
     }
    catch{
