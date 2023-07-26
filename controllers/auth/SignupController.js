@@ -23,9 +23,16 @@ import bcrypt from 'bcryptjs'
 
     // Email unique check
 
-    const user = await User.findOne({ email: req.body.email }) ;
-    if (!user)  { return next(errorHandler.wrongCredentials()) }
-   
+    try {
+      const user = await User.findOne({ email: req.body.email });
+    
+      if (!user) {
+        return next(errorHandler.wrongCredentials());
+      }
+    
+      // Proceed with further code if the user is found.
+    }
+   catch{
 
     // Get Body Data
     const {firstName,lastName,email,password} = req.body;
@@ -42,7 +49,7 @@ import bcrypt from 'bcryptjs'
      .save().then( () =>{ return next(new errorHandler('Successfully',200,)); })
      .catch((error) =>  {return next(new errorHandler(error.message,400,)); })  
      
-  
+   }
 
  }
      
