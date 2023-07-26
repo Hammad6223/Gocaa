@@ -30,8 +30,8 @@ import cloudinary from "../../utills/cloudinaryConfig.js";
 
 
     // Email unique check
-    const exist= await Dealer.exists({email: req.body.email})
-    if(exist) { return next(new errorHandler('User email already exists',401)); }
+    const user= await Dealer.exists({email: req.body.email})
+    if(user) { return next(new errorHandler('User email already exists',401)); }
 
     // Upload Cloudianry
 

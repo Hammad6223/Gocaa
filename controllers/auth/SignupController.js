@@ -22,16 +22,9 @@ import bcrypt from 'bcryptjs'
     if(error){   return next(new errorHandler(error.message,400,));  }
 
     // Email unique check
+    const user = await User.exists({email: req.body.email})
+    if(user) { return next(new errorHandler('User email already exists',401)); }
 
-  //   try {
-      const user = await User.exists({email: req.body.email})
-      if(user) { return next(new errorHandler('User email already exists',401)); }
-      // .then( () =>{ return next(new errorHandler('Successfully',200,)); })
-      // .catch((error) =>  {return next(new errorHandler(error.message,400,)); })  
-  //   if(!user) { return next(new errorHandler('User email already exists',401)); }
-
-  //   }
-  //  catch{
 
     // Get Body Data
     const {firstName,lastName,email,password} = req.body;
