@@ -16,15 +16,13 @@ ConnectDB();
 app.use('/images', express.static('images'));
 
 
-app.use("/",(req,res)=>{
-    res.json({message :"hello world"})
-})
-// // Auth Routes 
-// app.use('/auth', auth);
 
-// app.use('/admin', admin);
+// Auth Routes 
+app.use('/auth', auth);
 
-// app.use('/user', user);
+app.use('/admin', admin);
+
+app.use('/user', user);
 
 
 
