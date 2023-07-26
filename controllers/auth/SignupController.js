@@ -25,7 +25,7 @@ import bcrypt from 'bcryptjs'
     // Email unique check
     const exist= await User.exists({email: req.body.email})
 
-    if(!exist) { return next(new errorHandler('User email already exists',401)); }
+    if(exist) { return next(new errorHandler('User email already exists',401)); }
  
     // Get Body Data
     const {firstName,lastName,email,password} = req.body;
