@@ -21,11 +21,14 @@ import bcrypt from 'bcryptjs'
     const { error } = registerSchema.validate(req.body);
     if(error){   return next(new errorHandler(error.message,400,));  }
 
-
     // Email unique check
+   try{
      await User.exists({email: req.body.email})
-     .then( () =>{ return next(new errorHandler('User email already exists',401)); })
-    
+     return next(new errorHandler('User email already exists',401))
+    }
+   catch{
+
+   
 
     // Get Body Data
     const {firstName,lastName,email,password} = req.body;
@@ -44,6 +47,6 @@ import bcrypt from 'bcryptjs'
      
   }
 
-
+ }
      
 export default SignupController
