@@ -6,10 +6,7 @@
     ],
     "routes": [
        { "src": "/(.*)", "dest": "/" }
-    ],
-    "functions": {
-      "timeout": 30
-    }
+    ]
  }
 
  

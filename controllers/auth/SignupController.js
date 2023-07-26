@@ -5,7 +5,9 @@ import bcrypt from 'bcryptjs'
 
   
  const SignupController = async (req,resp,next)=>{
+
   
+  return next(new errorHandler('Profile image is required',400));
 
       //Validation
     const registerSchema = Joi.object({
