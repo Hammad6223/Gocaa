@@ -11,7 +11,7 @@ import bcrypt from 'bcryptjs'
     const registerSchema = Joi.object({
       firstName: Joi.string().required(),
       lastName:  Joi.string().required(),
-      email:     Joi.string().email().required(),
+      email:     Joi.string().email().unique().required(),
       password:  Joi.string().min(3).max(8).required(),
       confirm_password: Joi.string().valid(Joi.ref('password')).error( err => { err[0].message= "Confirm Password must match the password"; return err; } )
     });
