@@ -1,5 +1,5 @@
 import ConnectDB from './config/index.js';
-import express  from 'express';
+import express, { response }  from 'express';
 import cors from 'cors'
 import admin from './routes/admin.js'
 import auth from './routes/auth.js'
@@ -16,12 +16,15 @@ ConnectDB();
 app.use('/images', express.static('images'));
 
 
-// Auth Routes 
-app.use('/auth', auth);
+app.use("/",(req,res)=>{
+    res.json({message :"hello world"})
+})
+// // Auth Routes 
+// app.use('/auth', auth);
 
-app.use('/admin', admin);
+// app.use('/admin', admin);
 
-app.use('/user', user);
+// app.use('/user', user);
 
 
 
