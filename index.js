@@ -9,7 +9,7 @@ import ErrorMiddleware from './middleware/error.js'
 const app = express();
 app.use(express.json());
 app.use(cors());
-
+const PORT = process.env.PORT || 5000;
 // Connect Db
 ConnectDB();
 
@@ -29,4 +29,4 @@ app.use('/user', user);
 
 app.use(ErrorMiddleware);
 
-app.listen(5000)
+app.listen(PORT)
