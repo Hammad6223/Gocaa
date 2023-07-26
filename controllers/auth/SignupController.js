@@ -11,7 +11,7 @@ import bcrypt from 'bcryptjs'
     const registerSchema = Joi.object({
       firstName: Joi.string().required(),
       lastName:  Joi.string().required(),
-      email:     Joi.string().email().unique().required(),
+      email:     Joi.string().email().required(),
       password:  Joi.string().min(3).max(8).required(),
       confirm_password: Joi.string().valid(Joi.ref('password')).error( err => { err[0].message= "Confirm Password must match the password"; return err; } )
     });
@@ -24,7 +24,10 @@ import bcrypt from 'bcryptjs'
     // Email unique check
 
   //   try {
-  //   const user= await User.exists({email: req.body.email});
+      const user = await User.exists({email: req.body.email})
+      if(user) { return next(new errorHandler('User email already exists',401)); }
+      // .then( () =>{ return next(new errorHandler('Successfully',200,)); })
+      // .catch((error) =>  {return next(new errorHandler(error.message,400,)); })  
   //   if(!user) { return next(new errorHandler('User email already exists',401)); }
 
   //   }
