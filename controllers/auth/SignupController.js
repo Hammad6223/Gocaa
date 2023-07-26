@@ -22,12 +22,9 @@ import bcrypt from 'bcryptjs'
     if(error){   return next(new errorHandler(error.message,400,));  }
 
     // Email unique check
-   try{
-     await User.find({email: req.body.email})
-     return next(new errorHandler('User email already exists',401))
-    }
-   catch{
 
+    const user = await User.findOne({ email: req.body.email }) ;
+    if (!user)  { return next(errorHandler.wrongCredentials()) }
    
 
     // Get Body Data
@@ -45,7 +42,7 @@ import bcrypt from 'bcryptjs'
      .save().then( () =>{ return next(new errorHandler('Successfully',200,)); })
      .catch((error) =>  {return next(new errorHandler(error.message,400,)); })  
      
-  }
+  
 
  }
      
