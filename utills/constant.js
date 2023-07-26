@@ -3,7 +3,7 @@ import multer from 'multer';
 
 
     //   Multer confiq
-export  const upload = multer({  
+     export  const upload = multer({  
       storage : multer.diskStorage({
 
        destination: function (req, file, cb) {

@@ -5,7 +5,6 @@ import { upload } from '../utills/constant.js';
 
 import {DataProfile} from '../controllers/user/index.js';
 
-console.log(upload)
 // Profile
 router.get('/profile' ,auth, authorizeRoles("user"), DataProfile.viewProfile );
 
