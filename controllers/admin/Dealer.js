@@ -35,8 +35,10 @@ import cloudinary from "../../utills/cloudinaryConfig.js";
 
     // Upload Cloudianry
 
-    const image = await cloudinary.v2.uploader.upload(req.files['image'][0].path, { folder: "Gocaltity" });
-    const companyLogo = await cloudinary.v2.uploader.upload(req.files['companyLogo'][0].path, { folder: "Gocaltity" });
+    const image = await cloudinary.v2.uploader.upload(req.files['image'][0].path, { folder: "Gocaltity" } ,  async (err, result) => {
+      if(err) throw err; });
+    const companyLogo = await cloudinary.v2.uploader.upload(req.files['companyLogo'][0].path, { folder: "Gocaltity" },async (err, result) => {
+      if(err) throw err;});
  
 
     new Dealer({ ...req.body, image : image.public_id, companyLogo : companyLogo.public_id })
