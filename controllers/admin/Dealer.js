@@ -35,10 +35,10 @@ import cloudinary from "../../utills/cloudinaryConfig.js";
 
     // Upload Cloudianry
 
-   await cloudinary.v2.uploader.upload(req.files['image'][0].path, { folder: "Gocaltity" } ,  async (err, result) => {
-      if(err) throw err; });
-   await cloudinary.v2.uploader.upload(req.files['companyLogo'][0].path, { folder: "Gocaltity" },async (err, result) => {
-      if(err) throw err;});
+  //  await cloudinary.v2.uploader.upload(req.files['image'][0].path, { folder: "Gocaltity" } ,  async (err, result) => {
+  //     if(err) throw err; });
+  //  await cloudinary.v2.uploader.upload(req.files['companyLogo'][0].path, { folder: "Gocaltity" },async (err, result) => {
+  //     if(err) throw err;});
  
 
     new Dealer( ...req.body)
