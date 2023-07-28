@@ -22,8 +22,8 @@ import cloudinary from "../../utills/cloudinaryConfig.js";
       zip:       Joi.number().required(),
       companyName:Joi.string().required(),
      }).unknown();
-
-console.log(req.files['image'][0].path)
+ 
+     return resp.send(req.files['image'][0].path)
     // Validation Error Show
     const { error } = DealerSchema.validate(req.body);
     if(error){   return next(new errorHandler(error.message,400,));  }
