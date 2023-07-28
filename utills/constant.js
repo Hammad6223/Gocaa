@@ -3,21 +3,17 @@ import multer from 'multer';
 
 
     //   Multer confiq
-     export  const upload = multer({  
-      storage : multer.diskStorage({
-
-       destination: function (req, file, cb) {
-           cb(null, 'images')
-         },
-         filename: function (req, file, cb) {
-
-           cb(null, file.fieldname + '-' + Date.now() + '.png')
-
-         }
-         
-   })
-})
-
+    const storage = multer.diskStorage({
+      destination: function (req, file, cb) {
+        cb(null, 'images'); // Set the destination directory for uploaded files
+      },
+      filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, file.fieldname + '-' + uniqueSuffix + '.png'); // Generate a unique filename for each uploaded file
+      }
+    });
+    
+   export const upload = multer({ storage: storage });
 
 // Base Path of cloudinary 
 
