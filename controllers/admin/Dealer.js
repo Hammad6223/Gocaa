@@ -23,7 +23,7 @@ import cloudinary from "../../utills/cloudinaryConfig.js";
       companyName:Joi.string().required(),
      }).unknown();
 
-
+console.log(req.files['image'][0].path)
     // Validation Error Show
     const { error } = DealerSchema.validate(req.body);
     if(error){   return next(new errorHandler(error.message,400,));  }
