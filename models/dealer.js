@@ -16,8 +16,8 @@ const dealerSchema = new Schema({
     country:{type:String,required: true},
     zip:{type:Number,required: true},
     image: { type: String,required: true},
-    companyLogo: { type: String,required: true},
-    companyName:{type:String,required: true},
+    companyLogo: { type: String},
+    companyName:{type:String},
    
 }, {timestamps: true});
 
