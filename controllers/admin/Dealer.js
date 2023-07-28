@@ -29,19 +29,17 @@ import cloudinary from "../../utills/cloudinaryConfig.js";
     if(error){   return next(new errorHandler(error.message,400,));  }
 
 
-    // // Email unique check
-    // const user= await Dealer.exists({email: req.body.email})
-    // if(user) { return next(new errorHandler('User email already exists',401)); }
+    // Email unique check
+    const user= await Dealer.exists({email: req.body.email})
+    if(user) { return next(new errorHandler('User email already exists',401)); }
 
     // Upload Cloudianry
 
-  //  await cloudinary.v2.uploader.upload(req.files['image'][0].path, { folder: "Gocaltity" } ,  async (err, result) => {
-  //     if(err) throw err; });
-  //  await cloudinary.v2.uploader.upload(req.files['companyLogo'][0].path, { folder: "Gocaltity" },async (err, result) => {
-  //     if(err) throw err;});
+    const image = await cloudinary.v2.uploader.upload(req.files['image'][0].path, { folder: "Gocaltity" });
+    const companyLogo = await cloudinary.v2.uploader.upload(req.files['companyLogo'][0].path, { folder: "Gocaltity" });
  
 
-    new Dealer( ...req.body)
+    new Dealer({ ...req.body, image : image.public_id, companyLogo : companyLogo.public_id })
     .save().then( () =>{ return next(new errorHandler('Successfully',200,)); })
     .catch((error) =>  {return next(new errorHandler(error.message,400,)); })  
      
