@@ -5,9 +5,6 @@ import admin from './routes/admin.js'
 import auth from './routes/auth.js'
 import user from './routes/user.js'
 import ErrorMiddleware from './middleware/error.js'
-import path from 'path';
-import { dirname } from 'path';
-import { fileURLToPath } from 'url'; 
 
 const app = express();
 app.use(express.json());
@@ -16,20 +13,10 @@ const PORT = process.env.PORT || 5000;
 // Connect Db
 ConnectDB();
 
+app.use('/images', express.static('images'));
 
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-app.use(express.static(path.join(__dirname,'utills')))
-app.use('/static',express.static('utilss'))
-
-
-
-
-app.get("/", (req, res) => {
-    res.send("<h1>Hello to Gocality App API</h1>");
-  });
+app.get("/", (req, res) => {res.send("<h1>Hello to Gocality App API</h1>");  });
 
 // Auth Routes 
 app.use('/auth', auth);

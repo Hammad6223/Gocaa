@@ -1,15 +1,15 @@
-import Dealer from "../../models/dealer.js";
+import Driver from "../../models/driver.js";
 import Joi from "joi";
 import errorHandler from "../../utills/errorhandler.js";
 import cloudinary from "../../utills/cloudinaryConfig.js";
 
   
-  const DataDealer = {
+  const DataDriver = {
  
-  addDealer : async (req,resp,next)=>{
+  addDriver : async (req,resp,next)=>{
 
       //Validation
-    const DealerSchema = Joi.object({
+    const DriverSchema = Joi.object({
       firstName: Joi.string().required(),
       lastName:  Joi.string().required(),
       email:     Joi.string().email().required(),
@@ -20,41 +20,40 @@ import cloudinary from "../../utills/cloudinaryConfig.js";
       state:     Joi.string().required(),
       country:   Joi.string().required(),
       zip:       Joi.number().required(),
-      companyName:Joi.string().required(),
+      perHour:   Joi.number().required(),
      }).unknown();
  
   
     // Validation Error Show
-    const { error } = DealerSchema.validate(req.body);
+    const { error } = DriverSchema.validate(req.body);
     if(error){   return next(new errorHandler(error.message,400,));  }
 
 
     // Email unique check
-    const user= await Dealer.exists({email: req.body.email})
+    const user= await Driver.exists({email: req.body.email})
     if(user) { return next(new errorHandler('User email already exists',401)); }
 
     // Upload Cloudianry
 
     const image = await cloudinary.v2.uploader.upload(req.files['image'][0].path, { folder: "Gocaltity" });
-    const companyLogo = await cloudinary.v2.uploader.upload(req.files['companyLogo'][0].path, { folder: "Gocaltity" });
+    const licenseCopy = await cloudinary.v2.uploader.upload(req.files['licenseCopy'][0].path, { folder: "Gocaltity" });
  
 
-    new Dealer({ ...req.body, image : image.public_id, companyLogo : companyLogo.public_id })
+    new Driver({ ...req.body, image : image.public_id, licenseCopy : licenseCopy.public_id })
     .save().then( () =>{ return next(new errorHandler('Successfully',200,)); })
     .catch((error) =>  {return next(new errorHandler(error.message,400,)); })  
      
     },
   
-    // View Dealer
-     ViewDealer  : async (req,resp,next)=>{
+    // View Driver
+     ViewDriver  : async (req,resp,next)=>{
 
-    await Dealer.find({}).exec()
+    await Driver.find({}).exec()
     .then( (data) =>{ return next(new errorHandler(data, 200)); })
     .catch((error) =>{return next(new errorHandler("Something Went wrong", 400));  }); 
 
     }
 
 
-
   }
-  export default DataDealer
+  export default DataDriver

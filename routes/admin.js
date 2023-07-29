@@ -3,7 +3,7 @@ const router = express.Router();
 import {auth,authorizeRoles} from '../middleware/auth.js';
 import { upload } from '../utills/constant.js';
 
-import {DataProfile,DataVehicle, DataDealer} from '../controllers/admin/index.js';
+import {DataProfile,DataVehicle, DataDealer, DataDriver, DataService,} from '../controllers/admin/index.js';
 
 
 // Profile Section
@@ -25,6 +25,19 @@ router.get('/view_vehicle' , auth, authorizeRoles("admin"), DataVehicle.viewVehi
 router.post('/featured' , auth, authorizeRoles("admin"), DataVehicle.featured );
 // End Vehicle Section
 
+
+
+// Driver Section
+router.post('/add_driver' , auth, authorizeRoles("admin"),  upload.fields([{ name: 'image', maxCount: 1 }, { name: 'licenseCopy', maxCount: 1 }  ]), DataDriver.addDriver);
+router.get('/view_driver' , auth, authorizeRoles("admin"), DataDriver.ViewDriver );
+//  End Driver Section
+
+
+
+// service  Section
+router.post('/add_service' , auth, authorizeRoles("admin"),  upload.single('image') , DataService.addService);
+router.get('/view_service' , auth, authorizeRoles("admin"), DataService.ViewService );
+//  End service Section
 
 
 

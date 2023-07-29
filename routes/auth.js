@@ -1,7 +1,7 @@
 import express from 'express'
 const router = express.Router();
 
-import {LoginController,SignupController,ForgetController} from '../controllers/auth/index.js';
+import {LoginController,SignupController,ForgetController, DataReset} from '../controllers/auth/index.js';
 
 
 
@@ -13,6 +13,14 @@ router.post('/signup' , SignupController );
 
 // Forget
 router.post('/forget' , ForgetController );
+
+// Verify Otp
+router.post('/verify_otp' , DataReset.verifyOtp );
+
+// set password
+router.post('/set_password' , DataReset.setPassword );
+
+
 
 
 

@@ -20,7 +20,9 @@ const userSchema = new Schema({
     state:{type:String},
     country:{type:String},
     zip:{type:Number},
-    image: {type: String}
+    image: {type: String},  
+    otp: String,
+    otpExpiration: Date,
    
 }, {timestamps: true});
 

@@ -64,13 +64,13 @@ import cloudinary from "../../utills/cloudinaryConfig.js";
 
        // Featured
        featured : async (req,resp,next)=>{
- console.log(req.vehicle_id)
-        const vehicle = await Vehicle.findById(req._id);
-        console.log(vehicle);
+    
+        const vehicle = await Vehicle.findById(req.body.vehicle_id);
+      
 
-        // Vehicle.findByIdAndUpdate( req._id ,{featured : true},)   
-        // .then( () =>{ return next(new errorHandler('Sucessfully', 200)); })
-        // .catch((error) =>{return next(new errorHandler(error.message, 400));  }); 
+        Vehicle.findByIdAndUpdate( req._id ,{featured : !vehicle.featured},)   
+        .then( () =>{ return next(new errorHandler('Sucessfully', 200)); })
+        .catch((error) =>{return next(new errorHandler(error.message, 400));  }); 
       
       }
 
