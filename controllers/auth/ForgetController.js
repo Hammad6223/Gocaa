@@ -9,7 +9,7 @@ config();
 
 export const ForgetController = async (req,resp,next)=>{
 
-    return Response.send(req);
+    return resp.send(req);
 
           //Validation
           const registerSchema = Joi.object({
