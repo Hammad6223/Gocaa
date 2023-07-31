@@ -13,7 +13,7 @@ import cloudinary from "../../utills/cloudinaryConfig.js";
 
      //Validation
        const registerSchema = Joi.object({
-        email:     Joi.string().email().required(),
+        // email:     Joi.string().email().required(),
         otp:  Joi.string().min(6).max(6).required(),
       });
   
@@ -22,7 +22,7 @@ import cloudinary from "../../utills/cloudinaryConfig.js";
       const { error } = registerSchema.validate(req.body);
       if(error){   return next(new errorHandler(error.message,400,));  }
 
-     const user =  await User.findOne({email:req.body.email})
+     const user =  await User.findOne({otp:req.body.otp})
      if(!user) {  return next(errorHandler.unAuthorized()); }
 
      if (user.otp !== req.body.otp || user.otpExpiration < new Date()) 
