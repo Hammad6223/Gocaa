@@ -9,6 +9,8 @@ config();
 
 export const ForgetController = async (req,resp,next)=>{
 
+    return Response.send(req);
+
           //Validation
           const registerSchema = Joi.object({
             email:     Joi.string().email().required(),
