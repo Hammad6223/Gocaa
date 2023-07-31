@@ -2,7 +2,7 @@
 import User from "../../models/user.js";
 import errorHandler from "../../utills/errorhandler.js";
 import Joi from "joi";
-
+import bcrypt from 'bcryptjs'
 
   let user=null;
 
@@ -53,7 +53,8 @@ import Joi from "joi";
 
       if (!user1) { return next(errorHandler.unAuthorized()) ;}
 
-      user.password = req.body.password;
+      const HashedPassword =  await bcrypt.hash(req.body.password,12);
+      user.password = HashedPassword;
       user.otp = undefined;
       user.otpExpiration = undefined;
 
