@@ -33,13 +33,13 @@ export const ForgetController = async (req,resp,next)=>{
     try { await user.save(); }
     catch (error)  {return next(new errorHandler('Internal Server Error.',500,)); } 
 
-    return next(new errorHandler(process.env.EMAIL,500)); 
+    
 
     var transporter = nodemailer.createTransport({
       service: 'gmail',
         auth: {
           user:process.env.EMAIL,
-          pass: process.env.pass
+          pass: process.env.PASS
         }
       });
       
