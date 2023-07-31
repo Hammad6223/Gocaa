@@ -10,15 +10,14 @@ config();
 export const ForgetController = async (req,resp,next)=>{
 
 
-          //Validation
-          const registerSchema = Joi.object({
-            email:     Joi.string().email().required(),
-           });
-      
-      
-    // Validation Error Show
-    const { error } = registerSchema.validate(req.body);
-    if(error){   return next(new errorHandler(error.message,400,));  }
+    // const registerSchema = Joi.object({
+    //     email:     Joi.string().email().required(),
+    //     });
+
+
+    // // Validation Error Show
+    // const { error } = registerSchema.validate(req.body);
+    // if(error){   return next(new errorHandler(error.message,400));  }
 
     const user = await User.findOne({ email: req.body.email });
 
