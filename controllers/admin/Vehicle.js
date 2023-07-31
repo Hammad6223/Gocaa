@@ -2,7 +2,7 @@ import Vehicle from "../../models/vehicle.js";
 import Joi from "joi";
 import errorHandler from "../../utills/errorhandler.js";
 import cloudinary from "../../utills/cloudinaryConfig.js";
-
+import  fs  from "fs-extra";
   
  const DataVehicle = {
  
@@ -45,7 +45,9 @@ import cloudinary from "../../utills/cloudinaryConfig.js";
         
         if(error){   return next(new errorHandler(error,400,));  }
 
-
+        // delete multer image
+        await fs.remove(req.file.path); 
+        
        new Vehicle({ ...req.body, image : result.public_id})
       .save().then( () =>{ return next(new errorHandler('Successfully',200,)); })
       .catch((error) =>  {return next(new errorHandler(error.message,400,)); })  

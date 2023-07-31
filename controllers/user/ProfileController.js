@@ -3,13 +3,13 @@ import User from "../../models/user.js";
 import errorHandler from "../../utills/errorhandler.js";
 import Joi from "joi";
 import cloudinary from "../../utills/cloudinaryConfig.js";
-
+import  fs  from "fs-extra";
 
 
 
   const DataProfile = {
   
-     viewProfile : async  (req,resp,next)=>{
+      viewProfile : async  (req,resp,next)=>{
       User.findById({ _id:req.user._id})
       .then( (data) =>{ return next(new errorHandler(data, 200)); })
       .catch((error) =>{return next(new errorHandler("user not found", 400));  }); 
@@ -18,7 +18,7 @@ import cloudinary from "../../utills/cloudinaryConfig.js";
     
 
        // Edit Profile
-    editProfile : async  (req,resp,next)=>{
+      editProfile : async  (req,resp,next)=>{
 
 
         //Validation
@@ -66,6 +66,8 @@ import cloudinary from "../../utills/cloudinaryConfig.js";
         
         if(error){   return next(new errorHandler(error.message,400,));  }
     
+        // delete multer image
+        await fs.remove(req.file.path); 
 
         // Update profile 
         User.findByIdAndUpdate( req.user._id ,{image : result.public_id},)   

@@ -2,7 +2,7 @@ import Driver from "../../models/driver.js";
 import Joi from "joi";
 import errorHandler from "../../utills/errorhandler.js";
 import cloudinary from "../../utills/cloudinaryConfig.js";
-
+import  fs  from "fs-extra";
   
   const DataDriver = {
  
@@ -37,7 +37,11 @@ import cloudinary from "../../utills/cloudinaryConfig.js";
 
     const image = await cloudinary.v2.uploader.upload(req.files['image'][0].path, { folder: "Gocaltity" });
     const licenseCopy = await cloudinary.v2.uploader.upload(req.files['licenseCopy'][0].path, { folder: "Gocaltity" });
- 
+  
+    // delete multer image
+   await fs.remove(req.files['image'][0].path); 
+   await fs.remove(req.files['licenseCopy'][0].path); 
+
 
     new Driver({ ...req.body, image : image.public_id, licenseCopy : licenseCopy.public_id })
     .save().then( () =>{ return next(new errorHandler('Successfully',200,)); })

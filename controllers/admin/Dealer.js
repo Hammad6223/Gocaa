@@ -2,7 +2,7 @@ import Dealer from "../../models/dealer.js";
 import Joi from "joi";
 import errorHandler from "../../utills/errorhandler.js";
 import cloudinary from "../../utills/cloudinaryConfig.js";
-
+import  fs  from "fs-extra";
   
   const DataDealer = {
  
@@ -37,7 +37,10 @@ import cloudinary from "../../utills/cloudinaryConfig.js";
 
     const image = await cloudinary.v2.uploader.upload(req.files['image'][0].path, { folder: "Gocaltity" });
     const companyLogo = await cloudinary.v2.uploader.upload(req.files['companyLogo'][0].path, { folder: "Gocaltity" });
- 
+    
+    // delete multer image
+    await fs.remove(req.files['image'][0].path); 
+    await fs.remove(req.files['companyLogo'][0].path); 
 
     new Dealer({ ...req.body, image : image.public_id, companyLogo : companyLogo.public_id })
     .save().then( () =>{ return next(new errorHandler('Successfully',200,)); })
