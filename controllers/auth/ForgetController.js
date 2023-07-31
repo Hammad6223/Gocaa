@@ -4,20 +4,21 @@ import nodemailer from 'nodemailer'
 import { otpGen } from "otp-gen-agent";
 import { config } from 'dotenv';
 config();
+import Joi from "joi";
 
 
 
 export const ForgetController = async (req,resp,next)=>{
 
 
-    // const registerSchema = Joi.object({
-    //     email:     Joi.string().email().required(),
-    //     });
+    const registerSchema = Joi.object({
+        email:     Joi.string().email().required(),
+        });
 
 
-    // // Validation Error Show
-    // const { error } = registerSchema.validate(req.body);
-    // if(error){   return next(new errorHandler(error.message,400));  }
+    // Validation Error Show
+    const { error } = registerSchema.validate(req.body);
+    if(error){   return next(new errorHandler(error.message,400));  }
 
     const user = await User.findOne({ email: req.body.email });
 
