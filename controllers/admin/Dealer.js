@@ -8,6 +8,7 @@ import  fs  from "fs-extra";
  
   addDealer : async (req,resp,next)=>{
 
+
       //Validation
     const DealerSchema = Joi.object({
       firstName: Joi.string().required(),
@@ -23,7 +24,7 @@ import  fs  from "fs-extra";
       companyName:Joi.string().required(),
      }).unknown();
  
-  
+
     // Validation Error Show
     const { error } = DealerSchema.validate(req.body);
     if(error){   return next(new errorHandler(error.message,400,));  }
@@ -38,6 +39,7 @@ import  fs  from "fs-extra";
     const image = await cloudinary.v2.uploader.upload(req.files['image'][0].path, { folder: "Gocaltity" });
     const companyLogo = await cloudinary.v2.uploader.upload(req.files['companyLogo'][0].path, { folder: "Gocaltity" });
     
+ 
     // delete multer image
     await fs.remove(req.files['image'][0].path); 
     await fs.remove(req.files['companyLogo'][0].path); 

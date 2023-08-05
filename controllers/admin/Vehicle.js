@@ -13,6 +13,7 @@ import  fs  from "fs-extra";
  
       //Validation
     const VehicleSchema = Joi.object({
+        title:  Joi.string().required(),
         category:  Joi.string().required(),
         registrationNumber:  Joi.string().required(),
         color:  Joi.string().required(),
@@ -70,7 +71,7 @@ import  fs  from "fs-extra";
         const vehicle = await Vehicle.findById(req.body.vehicle_id);
       
 
-        Vehicle.findByIdAndUpdate( req._id ,{featured : !vehicle.featured},)   
+         Vehicle.findByIdAndUpdate( req._id ,{featured : !vehicle.featured},)   
         .then( () =>{ return next(new errorHandler('Sucessfully', 200)); })
         .catch((error) =>{return next(new errorHandler(error.message, 400));  }); 
       

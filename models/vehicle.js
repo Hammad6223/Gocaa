@@ -5,6 +5,7 @@ const Schema = mongoose.Schema;
 
 const vehicleSchema = new Schema({
 
+    title: { type: String, required: true},
     category: { type: String, required: true},
     registrationNumber: { type: String, required: true},
     color: { type: String, required: true},

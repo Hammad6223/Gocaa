@@ -6,13 +6,30 @@ import Vehicle from "../../models/vehicle.js";
 
 
    const Search= async  (req,resp,next)=>{
+
+
+    try{
     
-   await Vehicle.find({}).sort({ featured: -1 }).exec() 
-   .then( (data) =>{ return next(new errorHandler(data, 200)); })
-   .catch((error) =>{return next(new errorHandler("user not found", 400));  }); 
+      const Featured =  await Vehicle.find({featured: true}).exec();
+      const Vehicles  = await Vehicle.find({featured: false}).exec();
+   
+      const combinedData = {
+        Featured : Featured  ,
+        Vehicles : Vehicles,
+      };
+   
+      return next(new errorHandler(combinedData,200,));
+     }
+   
+     catch(error){ return next(new errorHandler(error.message, 400));  }
+   
+         
+     }
+
+    
   
 
-  }
+
 
 
     export default Search
