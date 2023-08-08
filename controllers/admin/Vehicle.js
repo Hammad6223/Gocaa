@@ -3,11 +3,13 @@ import Joi from "joi";
 import errorHandler from "../../utills/errorhandler.js";
 import cloudinary from "../../utills/cloudinaryConfig.js";
 import  fs  from "fs-extra";
+import Feature from "../../models/feature.js";
   
  const DataVehicle = {
  
      addVehicle : async (req,resp,next)=>{
 
+      
      // check image
     if(!req.file){return next(new errorHandler('Primary image is required',400)); }
  
@@ -23,15 +25,9 @@ import  fs  from "fs-extra";
         price: Joi.number().required(),
         engineCapacity: Joi.number().required(),
         transmission: Joi.string().required(),
-        airConditioning: Joi.boolean(),
         favourite: Joi.boolean(),
-        sunRoof: Joi.boolean(),
-        heatedSeats: Joi.boolean(),
-        navigationSystem: Joi.boolean(),
-        airBags: Joi.boolean(),
-        climateControl:Joi.boolean(),  
-        airConditioning: Joi.boolean(),  
-        dealer_id:Joi.string().regex(/^[0-9a-fA-F]{24}$/).required()
+        dealer_id:Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
+        
        }).unknown();
  
 
@@ -59,9 +55,18 @@ import  fs  from "fs-extra";
 
       // View vehicle
       viewVehicle : async (req,resp,next)=>{
-      Vehicle.find({}).populate('dealer_id').exec()
+        // try {
+        //   const vehicles = await Vehicle.find({}).populate('service_id').exec();
+        //   console.log('Vehicles with populated service_id:', vehicles);
+        // } catch (error) {
+        //   console.error('Error fetching vehicles:', error);
+        // }
+  
+
+      Vehicle.find({}).populate('dealer_id').populate(['feature_id']).exec()
       .then( (data) =>{ return next(new errorHandler(data, 200)); })
       .catch((error) =>{return next(new errorHandler("Something Went wrong", 400));  }); 
+
 
       },
 
@@ -75,7 +80,43 @@ import  fs  from "fs-extra";
         .then( () =>{ return next(new errorHandler('Sucessfully', 200)); })
         .catch((error) =>{return next(new errorHandler(error.message, 400));  }); 
       
-      }
+      },
+
+
+
+      // Features Section 
+
+      
+     addFeature: async (req,resp,next)=>{
+
+ 
+       //Validation
+      const VehicleSchema = Joi.object({
+        title:  Joi.string().required(),
+     
+        });
+  
+      // Validation Error Show
+       const { error } = VehicleSchema.validate(req.body);
+       if(error){   return next(new errorHandler(error.message,400,));  }
+
+      // Title unique check
+        const user = await Feature.exists({title: req.body.title})
+       if(user) { return next(new errorHandler('Title already exists',401)); }
+     
+      new Feature({ title: req.body.title})
+      .save().then( () =>{ return next(new errorHandler('Successfully',200,)); })
+      .catch((error) =>  {return next(new errorHandler(error.message,400,)); })  
+         
+     },
+
+      // View Feature
+      viewFeature : async (req,resp,next)=>{
+        Feature.find({}).exec()
+        .then( (data) =>{ return next(new errorHandler(data, 200)); })
+        .catch((error) =>{return next(new errorHandler("Something Went wrong", 400));  }); 
+  
+        },     
 
  }
 

@@ -23,7 +23,7 @@ import bcrypt from 'bcryptjs'
 
     // Email unique check
     const user = await User.exists({email: req.body.email})
-    if(user) { return next(new errorHandler('User email already exists',401)); }
+    if(user) { return next(new errorHandler('User email already exist',401)); }
 
 
     // Get Body Data
@@ -42,7 +42,6 @@ import bcrypt from 'bcryptjs'
      .catch((error) =>  {return next(new errorHandler(error.message,400,)); })  
      
    }
-
 
      
 export default SignupController

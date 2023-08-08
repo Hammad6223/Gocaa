@@ -23,6 +23,9 @@ router.get('/view_dealer' , auth, authorizeRoles("admin"), DataDealer.ViewDealer
 router.post('/add_vehicle' , auth, authorizeRoles("admin"),  upload.single('image') ,DataVehicle.addVehicle );
 router.get('/view_vehicle' , auth, authorizeRoles("admin"), DataVehicle.viewVehicle );
 router.post('/featured' , auth, authorizeRoles("admin"), DataVehicle.featured );
+// car listong features
+router.post('/add_feature' , auth, authorizeRoles("admin"), DataVehicle.addFeature );
+router.get('/view_feature' , auth, authorizeRoles("admin"), DataVehicle.viewFeature );
 // End Vehicle Section
 
 

@@ -10,7 +10,7 @@ import Service from '../../models/service.js'
 
     try{
     
-   const vehicle =  await Vehicle.find({featured: true}).exec();
+   const vehicle =  await Vehicle.find({featured: true}).populate(['feature_id']).exec();
    const service  = await Service.find({}).exec();
 
    const combinedData = {
