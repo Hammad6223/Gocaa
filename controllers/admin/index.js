@@ -3,9 +3,10 @@ import DataDealer from "./Dealer.js";
 import DataVehicle from "./Vehicle.js";
 import DataDriver from "./Driver.js";
 import DataService from "./Service.js";
+import DataPackage from "./Package.js";
 
 
 
 
-export {DataProfile,DataDealer,DataVehicle,DataDriver,DataService}  
+export {DataProfile,DataDealer,DataVehicle,DataDriver,DataService,DataPackage}  
 

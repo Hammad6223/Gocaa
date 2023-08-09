@@ -30,6 +30,9 @@ import  fs  from "fs-extra";
     if(error){   return next(new errorHandler(error.message,400,));  }
 
 
+    if(!req.files['image']){return next(new errorHandler(' image is required',400)); }
+    if(!req.files['companyLogo']){return next(new errorHandler('License copy is required',400)); }
+    
     // Email unique check
     const user= await Dealer.exists({email: req.body.email})
     if(user) { return next(new errorHandler('User email already exists',401)); }

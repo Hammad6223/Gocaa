@@ -3,7 +3,7 @@ const router = express.Router();
 import {auth,authorizeRoles} from '../middleware/auth.js';
 import { upload } from '../utills/constant.js';
 
-import {DataProfile,DataVehicle, DataDealer, DataDriver, DataService,} from '../controllers/admin/index.js';
+import {DataProfile,DataVehicle, DataDealer, DataDriver, DataService, DataPackage,} from '../controllers/admin/index.js';
 
 
 // Profile Section
@@ -41,6 +41,13 @@ router.get('/view_driver' , auth, authorizeRoles("admin"), DataDriver.ViewDriver
 router.post('/add_service' , auth, authorizeRoles("admin"),  upload.single('image') , DataService.addService);
 router.get('/view_service' , auth, authorizeRoles("admin"), DataService.ViewService );
 //  End service Section
+
+
+
+// Package  Section
+router.post('/add_package' , auth, authorizeRoles("admin"),  upload.single('image') , DataPackage.addPackage);
+router.get('/view_package' , auth, authorizeRoles("admin"), DataPackage.viewPackage );
+//  End Package Section
 
 
 

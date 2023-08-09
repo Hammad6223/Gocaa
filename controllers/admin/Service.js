@@ -8,6 +8,7 @@ import  fs  from "fs-extra";
  
   addService : async (req,resp,next)=>{
 
+    console.log(req.body)
       //Validation
     const ServiceSchema = Joi.object({
       title: Joi.string().required(),

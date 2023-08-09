@@ -8,8 +8,8 @@ import Feature from "../../models/feature.js";
  const DataVehicle = {
  
      addVehicle : async (req,resp,next)=>{
+    
 
-      
      // check image
     if(!req.file){return next(new errorHandler('Primary image is required',400)); }
  
@@ -19,7 +19,7 @@ import Feature from "../../models/feature.js";
         category:  Joi.string().required(),
         registrationNumber:  Joi.string().required(),
         color:  Joi.string().required(),
-        modal : Joi.number().required(),
+        modal:  Joi.string().required(), 
         make : Joi.string().required(),
         variant : Joi.string().required(),
         price: Joi.number().required(),
@@ -45,7 +45,7 @@ import Feature from "../../models/feature.js";
         // delete multer image
         await fs.remove(req.file.path); 
         
-       new Vehicle({ ...req.body, image : result.public_id})
+       new Vehicle({ ...req.body, image : result.public_id , feature_id :JSON.parse(req.body.feature_id)})
       .save().then( () =>{ return next(new errorHandler('Successfully',200,)); })
       .catch((error) =>  {return next(new errorHandler(error.message,400,)); })  
       
@@ -55,12 +55,7 @@ import Feature from "../../models/feature.js";
 
       // View vehicle
       viewVehicle : async (req,resp,next)=>{
-        // try {
-        //   const vehicles = await Vehicle.find({}).populate('service_id').exec();
-        //   console.log('Vehicles with populated service_id:', vehicles);
-        // } catch (error) {
-        //   console.error('Error fetching vehicles:', error);
-        // }
+
   
 
       Vehicle.find({}).populate('dealer_id').populate(['feature_id']).exec()

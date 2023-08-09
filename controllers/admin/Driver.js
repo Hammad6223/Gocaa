@@ -28,6 +28,9 @@ import  fs  from "fs-extra";
     const { error } = DriverSchema.validate(req.body);
     if(error){   return next(new errorHandler(error.message,400,));  }
 
+    if(!req.files['image']){return next(new errorHandler(' image is required',400)); }
+    if(!req.files['licenseCopy']){return next(new errorHandler('License copy is required',400)); }
+    
 
     // Email unique check
     const user= await Driver.exists({email: req.body.email})
