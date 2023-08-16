@@ -68,7 +68,7 @@ import Feature from "../../models/feature.js";
   DetailVehicle: async (req, resp, next) => {
 
     await Vehicle.findById({ _id: req.params.id }).populate('feature_id').exec()
-    .then((data) => {return next(new errorHandler(data, 200)); })
+    .then((data) => { return next(new errorHandler(data, 200)); })
     .catch((error) => { return next(new errorHandler("Something Went wrong", 400)); });
 
 },

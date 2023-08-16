@@ -24,9 +24,9 @@ console.log(req.body)
   const { error } = CartSchema.validate(req.body);
   if (error) { return next(new errorHandler(error.message, 400,)); }
 
-  req.body.user = req.user._id;
 
-  new Cart({ ...req.body})
+
+  new Cart({ ...req.body, user_id :req.user._id })
     .save().then(() => { return next(new errorHandler('Successfully', 200,)); })
     .catch((error) => { return next(new errorHandler(error.message, 400,)); })
 

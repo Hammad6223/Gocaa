@@ -4,9 +4,9 @@ import DataVehicle from "./Vehicle.js";
 import DataDriver from "./Driver.js";
 import DataService from "./Service.js";
 import DataPackage from "./Package.js";
+import DataResveration from "./Resveration.js";
 
 
 
-
-export {DataProfile,DataDealer,DataVehicle,DataDriver,DataService,DataPackage}  
+export {DataProfile,DataDealer,DataVehicle,DataDriver,DataService,DataPackage,DataResveration}  
 

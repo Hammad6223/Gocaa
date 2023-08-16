@@ -14,6 +14,7 @@ const cartSchema = new Schema({
     location :{type:String,required: true},
     vehicle_id:[{ type: mongoose.Schema.Types.ObjectId,  ref:'Vehicle' }],
     service_id: [{ type: mongoose.Schema.Types.ObjectId,  ref:'Service' }],
+    package_id: [{ type: mongoose.Schema.Types.ObjectId,  ref:'Package' }],
     user_id:{ type: mongoose.Schema.Types.ObjectId,  ref:'User' },
 
    
