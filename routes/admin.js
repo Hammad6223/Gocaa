@@ -8,20 +8,23 @@ import {DataProfile,DataVehicle, DataDealer, DataDriver, DataService, DataPackag
 
 // Profile Section
 router.get('/profile' ,auth, authorizeRoles("admin"), DataProfile.viewProfile );
-router.post('/edit_profile' ,auth, authorizeRoles("admin"),DataProfile.editProfile);
-router.post('/edit_profile_image' , auth, authorizeRoles("admin"),  upload.single('image'), DataProfile.editProfileImage );
+router.post('/edit_profile' ,auth, authorizeRoles("admin"), upload.single('image')  , DataProfile.editProfile);
+
 //  End Profile Section
 
 
 // Dealer Section
 router.post('/add_dealer' , auth, authorizeRoles("admin"),  upload.fields([{ name: 'image', maxCount: 1 }, { name: 'companyLogo', maxCount: 1 }  ]), DataDealer.addDealer);
 router.get('/view_dealer' , auth, authorizeRoles("admin"), DataDealer.ViewDealer );
+router.get('/detail_dealer/:id' , auth, authorizeRoles("admin"), DataDealer.DetailDealer );
+router.post('/edit_dealer/:id' ,auth, authorizeRoles("admin"), upload.fields([{ name: 'image', maxCount: 1 }, { name: 'companyLogo', maxCount: 1 }  ]), DataDealer.editDealer);
 //  End Dealer Section
 
 
 //  Vehicle Section
 router.post('/add_vehicle' , auth, authorizeRoles("admin"),  upload.single('image') ,DataVehicle.addVehicle );
 router.get('/view_vehicle' , auth, authorizeRoles("admin"), DataVehicle.viewVehicle );
+router.get('/detail_vehicle/:id' , auth, authorizeRoles("admin"), DataVehicle.DetailVehicle );
 router.post('/featured' , auth, authorizeRoles("admin"), DataVehicle.featured );
 // car listong features
 router.post('/add_feature' , auth, authorizeRoles("admin"), DataVehicle.addFeature );

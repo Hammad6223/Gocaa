@@ -36,15 +36,23 @@ import  fs  from "fs-extra";
           if(error){   return next(new errorHandler(error.message,400,));  }
       
       
-        //   Email unique check
-          const user= await User.exists({email: req.body.email});
-          if(user._id != req.user._id ) { return next(new errorHandler('User email already exists',401)); }
+        
+
+          try {
+            // Check if the new email is unique
+            const existingUser = await User.findOne({email: req.body.email});
+            if (existingUser && existingUser._id.toString() !== req.user._id) {
+              return next(new errorHandler('User email already exists',401)); }     
+        
+            }
+            catch (error) {  console.error(error);    }
        
           // Update Data
 
           User.findByIdAndUpdate( req.user._id , req.body,{ runValidators: true })
          .then( () =>{ return next(new errorHandler('Sucessfully', 200)); })
          .catch((error) =>{return next(new errorHandler(error.message, 400));  }); 
+         
       },
 
 
@@ -72,7 +80,9 @@ import  fs  from "fs-extra";
         // Update profile 
         User.findByIdAndUpdate( req.user._id ,{image : result.public_id},)   
         .then( () =>{ return next(new errorHandler('Sucessfully', 200)); })
-        .catch((error) =>{return next(new errorHandler(error.message, 400));  }); 
+        .catch((error) =>{return next(new errorHandler(error.message, 400));  });
+
+        
 
         })
 

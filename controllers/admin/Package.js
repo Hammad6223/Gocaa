@@ -1,4 +1,6 @@
 import Package from "../../models/package.js";
+import Vehicle from "../../models/vehicle.js";
+import Service from "../../models/service.js";
 import Joi from "joi";
 import errorHandler from "../../utills/errorhandler.js";
 import cloudinary from "../../utills/cloudinaryConfig.js";
@@ -19,10 +21,8 @@ import Feature from "../../models/feature.js";
       //Validation
     const PackageSchema = Joi.object({
         title:  Joi.string().required(),
-        price: Joi.number().required(),
         vehicleDiscount: Joi.number().required(),
-        serviceDiscount: Joi.number().required(),
-        
+        serviceDiscount: Joi.number().required(),    
        }).unknown();
  
 
@@ -30,7 +30,18 @@ import Feature from "../../models/feature.js";
        const { error } = PackageSchema.validate(req.body);
        if(error){   return next(new errorHandler(error.message,400,));  }
 
+    //    Discount Calcualte
+       const vehicles =  await Vehicle.find(({ _id: { $in: req.body.vehicle_id } })).exec();
+       const services  = await Service.find(({ _id: { $in: req.body.service_id } })).exec();
+       let vehicleSum = 0 ; let serviceSum = 0 ; let totalprice =0 ;
+       for (const vehicle of vehicles) { vehicleSum +=  vehicleSum + vehicle.price  }
+       for (const service of services) { serviceSum +=  serviceSum + service.price  }
+      
+       let vehicleDis = vehicleSum - (vehicleSum * req.body.vehicleDiscount / 100) 
+       let serviceDis = serviceSum - (serviceSum * req.body.serviceDiscount / 100) 
+       totalprice = vehicleDis + serviceDis
 
+       // end discount
 
        // Upload Cloudianry
        await cloudinary.v2.uploader.upload(req.file.path, { folder: "Gocaltity" }, async (error, result) => {
@@ -40,7 +51,7 @@ import Feature from "../../models/feature.js";
         // delete multer image
         await fs.remove(req.file.path); 
         // vehicle_id :JSON.parse(req.body.vehicle_id) , service_id :JSON.parse(req.body.service_id)
-       new Package({ ...req.body, image : result.public_id })
+       new Package({ ...req.body, image : result.public_id , price : totalprice, vehicle_id :JSON.parse(req.body.vehicle_id) , service_id :JSON.parse(req.body.service_id) })
       .save().then( () =>{ return next(new errorHandler('Successfully',200,)); })
       .catch((error) =>  {return next(new errorHandler(error.message,400,)); })  
       

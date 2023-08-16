@@ -64,6 +64,15 @@ import Feature from "../../models/feature.js";
 
 
       },
+        // DetailVehicle
+  DetailVehicle: async (req, resp, next) => {
+
+    await Vehicle.findById({ _id: req.params.id }).populate('feature_id').exec()
+    .then((data) => {return next(new errorHandler(data, 200)); })
+    .catch((error) => { return next(new errorHandler("Something Went wrong", 400)); });
+
+},
+
 
        // Featured
        featured : async (req,resp,next)=>{
@@ -103,7 +112,9 @@ import Feature from "../../models/feature.js";
       .save().then( () =>{ return next(new errorHandler('Successfully',200,)); })
       .catch((error) =>  {return next(new errorHandler(error.message,400,)); })  
          
-     },
+     }, 
+     
+
 
       // View Feature
       viewFeature : async (req,resp,next)=>{
