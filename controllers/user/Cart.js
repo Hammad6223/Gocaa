@@ -6,8 +6,6 @@ import Joi from "joi";
 
    const Resveration =  async  (req,resp,next)=>{
 
-    
-console.log(req.body)
     //Validation
     const CartSchema = Joi.object({
     totalPrice: Joi.number().required(),
