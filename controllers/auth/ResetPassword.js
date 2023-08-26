@@ -4,6 +4,7 @@ import errorHandler from "../../utills/errorhandler.js";
 import Joi from "joi";
 import bcrypt from 'bcryptjs'
 
+
   let user=null;
 
   const DataReset = {
@@ -63,9 +64,10 @@ import bcrypt from 'bcryptjs'
       .then( () =>{ return next(new errorHandler('Sucessfully', 200)); })
       .catch((error) =>{return next(new errorHandler(error.message, 400));  }); 
 
-    }
+    },
 
-
+   
+    
       
 
 }

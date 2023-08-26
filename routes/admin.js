@@ -3,7 +3,7 @@ const router = express.Router();
 import {auth,authorizeRoles} from '../middleware/auth.js';
 import { upload } from '../utills/constant.js';
 
-import {DataProfile,DataVehicle, DataDealer, DataDriver, DataService, DataPackage,DataResveration} from '../controllers/admin/index.js';
+import {DataProfile,DataVehicle, DataDealer, DataDriver, DataService, DataPackage,DataResveration,DataBooking} from '../controllers/admin/index.js';
 
 
 // Profile Section
@@ -25,7 +25,9 @@ router.post('/edit_dealer/:id' ,auth, authorizeRoles("admin"), upload.fields([{ 
 router.post('/add_vehicle' , auth, authorizeRoles("admin"),  upload.single('image') ,DataVehicle.addVehicle );
 router.get('/view_vehicle' , auth, authorizeRoles("admin"), DataVehicle.viewVehicle );
 router.get('/detail_vehicle/:id' , auth, authorizeRoles("admin"), DataVehicle.DetailVehicle );
-router.post('/featured' , auth, authorizeRoles("admin"), DataVehicle.featured );
+router.get('/featured/:id' , auth, authorizeRoles("admin"), DataVehicle.featured );
+router.get('/view_featured' , auth, authorizeRoles("admin"), DataVehicle.viewFeatured );
+
 // car listong features
 router.post('/add_feature' , auth, authorizeRoles("admin"), DataVehicle.addFeature );
 router.get('/view_feature' , auth, authorizeRoles("admin"), DataVehicle.viewFeature );
@@ -36,6 +38,8 @@ router.get('/view_feature' , auth, authorizeRoles("admin"), DataVehicle.viewFeat
 // Driver Section
 router.post('/add_driver' , auth, authorizeRoles("admin"),  upload.fields([{ name: 'image', maxCount: 1 }, { name: 'licenseCopy', maxCount: 1 }  ]), DataDriver.addDriver);
 router.get('/view_driver' , auth, authorizeRoles("admin"), DataDriver.ViewDriver );
+router.get('/detail_driver/:id' , auth, authorizeRoles("admin"), DataDriver.DetailDriver );
+router.post('/edit_driver/:id' ,auth, authorizeRoles("admin"), upload.fields([{ name: 'image', maxCount: 1 }, { name: 'licenseCopy', maxCount: 1 }  ]), DataDriver.editDriver);
 //  End Driver Section
 
 
@@ -50,13 +54,21 @@ router.get('/view_service' , auth, authorizeRoles("admin"), DataService.ViewServ
 // Package  Section
 router.post('/add_package' , auth, authorizeRoles("admin"),  upload.single('image') , DataPackage.addPackage);
 router.get('/view_package' , auth, authorizeRoles("admin"), DataPackage.viewPackage );
+router.get('/detail_package/:id' , auth, authorizeRoles("admin"), DataPackage.detailPackage );
 //  End Package Section
 
 
 // Resveration  Section
 router.get('/latest_resveration' , auth, authorizeRoles("admin"), DataResveration.latestResveration );
+router.get('/detail_resveration/:id' , auth, authorizeRoles("admin"), DataResveration.detailResveration );
+router.get('/cancel_resveration/:id' , auth, authorizeRoles("admin"), DataResveration.cancelResveration );
 //  End Resveration Section
 
+// Booking  Section
+router.post('/booking/:id' , auth, authorizeRoles("admin"), DataBooking.booking );
+router.post('/package_booking/:id' , auth, authorizeRoles("admin"), DataBooking.packageBooking );
+router.get('/view_booking' , auth, authorizeRoles("admin"), DataBooking.viewBooking );
+//  End Booking Section
 
 
 export default router; 

@@ -11,7 +11,7 @@ import Feature from "../../models/feature.js";
  
      addPackage : async (req,resp,next)=>{
     
-
+console.log(req.body)
      // check image
     if(!req.file){return next(new errorHandler(' image is required',400)); }
     if(!req.body.vehicle_id) {return next(new errorHandler('please at least one vehicle add',400)); }
@@ -51,7 +51,7 @@ import Feature from "../../models/feature.js";
         // delete multer image
         await fs.remove(req.file.path); 
         // vehicle_id :JSON.parse(req.body.vehicle_id) , service_id :JSON.parse(req.body.service_id)
-       new Package({ ...req.body, image : result.public_id , price : totalprice, vehicle_id :JSON.parse(req.body.vehicle_id) , service_id :JSON.parse(req.body.service_id) })
+       new Package({ ...req.body, image : result.public_id , price : totalprice,  })
       .save().then( () =>{ return next(new errorHandler('Successfully',200,)); })
       .catch((error) =>  {return next(new errorHandler(error.message,400,)); })  
       
@@ -66,14 +66,22 @@ import Feature from "../../models/feature.js";
 
       Package.find({}).populate({path : 'vehicle_id' ,populate: { path: 'feature_id',    model: 'Feature'}}).populate('service_id').exec()
       .then( (data) =>{ return next(new errorHandler(data, 200)); })
-      .catch((error) =>{
-        console.log(error);
-        return next(new errorHandler("Something Went wrong", 400));  }); 
+      .catch((error) =>{  return next(new errorHandler("Something Went wrong", 400));  }); 
 
 
       },
 
 
+
+      // Detail Package
+    detailPackage: async (req, resp, next) => {
+
+      Package.findById({_id: req.params.id }).populate({path : 'vehicle_id' ,populate: { path: 'feature_id',    model: 'Feature'}}).populate('service_id').exec()
+      .then( (data) =>{ return next(new errorHandler(data, 200)); })
+      .catch((error) =>{  return next(new errorHandler(error.message, 400));  }); 
+
+  
+    },
 
 
      

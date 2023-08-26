@@ -3,6 +3,7 @@ const router = express.Router();
 import {auth,authorizeRoles} from '../middleware/auth.js';
 import { upload } from '../utills/constant.js';
 
+import Order from '../controllers/user/Order.js';
 import {DataProfile, Home,Search,Reservation} from '../controllers/user/index.js';
 
 // Profile
@@ -20,6 +21,8 @@ router.get('/search' ,auth, authorizeRoles("user"), Search );
 
 // Search
 router.post('/cart' ,auth, authorizeRoles("user"),Reservation );
+
+router.get('/order' ,auth, authorizeRoles("user"),Order );
 
 
 
