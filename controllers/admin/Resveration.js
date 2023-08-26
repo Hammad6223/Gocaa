@@ -6,6 +6,7 @@ import cloudinary from "../../utills/cloudinaryConfig.js";
 import fs from "fs-extra";
 import cart from "../../models/cart.js";
 import Driver from "../../models/driver.js";
+import Booking from "../../models/booking.js";
 
 const DataResveration = {
 
@@ -22,7 +23,6 @@ const DataResveration = {
     detailResveration: async (req, resp, next) => {
 
       const  resveration =   await cart.findById({_id: req.params.id }).populate({path : 'vehicle_id' ,populate: { path: 'feature_id',    model: 'Feature'}}).populate('service_id').populate('package_id').populate('user_id').exec();
-      console.log(resveration.startDate)
       const driver =await Driver.find({}).exec();
 
           const combinedData = {
@@ -39,16 +39,13 @@ const DataResveration = {
         // Detail Resveration
     cancelResveration: async (req, resp, next) => {
 
-      const  resveration =   await cart.findById({_id: req.params.id }).exec();
-      console.log(resveration.startDate)
-      // const driver =await Driver.find({}).exec();
-
-      //     const combinedData = {
-      //      resveration:  resveration,
-      //      driver: driver,
-      //     };
     
-      //     return next(new errorHandler(combinedData, 200,));
+      await Booking.deleteMany({ cart_id: req.params.id});
+      await cart.findByIdAndUpdate( { _id: req.params.id }, { booking_id: null, status: 'rejected' }).exec()
+      .then(() => { return next(new errorHandler('Successfully', 200)); })
+      .catch((error) => { return next(new errorHandler("Something Went wrong", 400)); });
+
+ 
 
       },
 
