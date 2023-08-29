@@ -24,6 +24,8 @@ router.post('/cart' ,auth, authorizeRoles("user"),Reservation );
 
 router.get('/order' ,auth, authorizeRoles("user"),Order );
 
+router.get('/order' ,auth, authorizeRoles("user"),Order );
+
 
 
 export default router;
