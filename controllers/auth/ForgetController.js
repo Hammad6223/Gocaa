@@ -12,7 +12,7 @@ export const ForgetController = async (req,resp,next)=>{
 
 
     const registerSchema = Joi.object({
-        email:     Joi.string().email().required(),
+        email: Joi.string().email().required(),
         });
 
 

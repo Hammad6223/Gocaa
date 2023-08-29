@@ -61,7 +61,13 @@ router.get('/detail_package/:id' , auth, authorizeRoles("admin"), DataPackage.de
 // Resveration  Section
 router.get('/latest_resveration' , auth, authorizeRoles("admin"), DataResveration.latestResveration );
 router.get('/detail_resveration/:id' , auth, authorizeRoles("admin"), DataResveration.detailResveration );
+
+router.get('/cancel_resveration' , auth, authorizeRoles("admin"), DataResveration.canceltotalResveration );
 router.get('/cancel_resveration/:id' , auth, authorizeRoles("admin"), DataResveration.cancelResveration );
+
+router.get('/inprogress_resveration' , auth, authorizeRoles("admin"), DataResveration.inprogressResveration );
+router.get('/detail_approve_resveration/:id' , auth, authorizeRoles("admin"), DataResveration.detailapproveResveration );
+
 //  End Resveration Section
 
 // Booking  Section

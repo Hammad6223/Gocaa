@@ -10,7 +10,7 @@ const bookingSchema = new Schema({
     vehicle_id:{ type: mongoose.Schema.Types.ObjectId,  ref:'Vehicle',required :true },
     cart_id: { type: mongoose.Schema.Types.ObjectId,  ref:'Cart' ,required:true},
     driver_id:{ type: mongoose.Schema.Types.ObjectId,  ref:'Driver',required:true },
-    package_id:{ type: mongoose.Schema.Types.ObjectId,  ref:'Package'},
+    package_id:{ type: mongoose.Schema.Types.ObjectId,  ref:'Package',default: []},
    
 }, {timestamps: true});
 

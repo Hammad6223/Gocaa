@@ -48,7 +48,7 @@ const DataBooking = {
       driver_id: req.body.driver_id,  $or: [  { startDate: { $gte: new Date(res.startDate) } },  { endDate: { $lte: new Date(res.endDate) } }] });
     
     if(data.length === 0) {
-    new Booking({ ...req.body, cart_id:req.body.cart_id,startDate:res.startDate ,endDate:res.endDate,package_id:req.params.id })
+    new Booking({ ...req.body,startDate:res.startDate ,endDate:res.endDate,package_id:req.params.id })
     .save().then( (data) =>{
     
       Cart.findByIdAndUpdate( req.body.cart_id,   { $push: { booking_id: data._id } }, { runValidators: true }, )

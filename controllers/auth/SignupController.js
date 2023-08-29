@@ -32,11 +32,18 @@ import bcrypt from 'bcryptjs'
     //  Password Bcrypt
     const HashedPassword =  await bcrypt.hash(password,12);
 
+    const otp = await otpGen();
+
+    otp = otp;
+    otpExpiration = new Date(Date.now() + 10 * 60 * 1000); 
+
     new User({
       firstName,
       lastName,
       email,
       password :HashedPassword,
+      otp: otp,
+      otpExpiration : otpExpiration
     })
      .save().then( () =>{ return next(new errorHandler('Successfully',200,)); })
      .catch((error) =>  {return next(new errorHandler(error.message,400,)); })  
