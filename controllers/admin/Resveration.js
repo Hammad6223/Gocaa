@@ -13,7 +13,7 @@ const DataResveration = {
   // View Resveration
   latestResveration: async (req, resp, next) => {
 
-    await cart.find({status : 'pending'}).populate('user_id').exec()
+    await cart.find({status : 'pending'}).sort({createdAt: -1}).populate('user_id').exec()
       .then((data) => { return next(new errorHandler(data, 200)); })
       .catch((error) => { return next(new errorHandler("Something Went wrong", 400)); });
 
@@ -40,7 +40,7 @@ const DataResveration = {
  // Find cancel Resveration
  canceltotalResveration: async (req, resp, next) => {
 
-  await cart.find({status : 'rejected'}).populate('user_id').exec()
+  await cart.find({status : 'rejected'}).populate('user_id').sort({createdAt: -1}).exec()
     .then((data) => { return next(new errorHandler(data, 200)); })
     .catch((error) => { return next(new errorHandler(error.message, 400)); });
 
@@ -76,7 +76,7 @@ const DataResveration = {
   //  inprogress 
       inprogressResveration: async (req, resp, next) => {
 
-        await cart.find({status : 'inprogress'}).populate('user_id').exec()
+        await cart.find({status : 'inprogress'}).sort({createdAt: -1}).populate('user_id').exec()
           .then((data) => { return next(new errorHandler(data, 200)); })
           .catch((error) => { return next(new errorHandler(error.message, 400)); });
       
