@@ -22,7 +22,7 @@ const Order = {
 
  pending :async  (req,resp,next)=>{
 
-    await Cart.find({status : 'pending' ,user_id :req.user._id}).exec()
+    await Cart.find({status : 'pending' ,user_id :req.user._id}).populate('vehicle_id').populate('service_id').populate('package_id').exec()
       .then((data) => { return next(new errorHandler(data, 200)); })
       .catch((error) => { return next(new errorHandler(error.message, 400)); });
 
