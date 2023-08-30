@@ -64,6 +64,7 @@ router.get('/detail_resveration/:id' , auth, authorizeRoles("admin"), DataResver
 
 router.get('/cancel_resveration' , auth, authorizeRoles("admin"), DataResveration.canceltotalResveration );
 router.get('/cancel_resveration/:id' , auth, authorizeRoles("admin"), DataResveration.cancelResveration );
+router.get('/approve_resveration/:id' , auth, authorizeRoles("admin"), DataResveration.approveResveration );
 
 router.get('/inprogress_resveration' , auth, authorizeRoles("admin"), DataResveration.inprogressResveration );
 router.get('/detail_approve_resveration/:id' , auth, authorizeRoles("admin"), DataResveration.detailapproveResveration );

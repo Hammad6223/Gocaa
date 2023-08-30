@@ -22,9 +22,9 @@ router.get('/search' ,auth, authorizeRoles("user"), Search );
 // Search
 router.post('/cart' ,auth, authorizeRoles("user"),Reservation );
 
-router.get('/order' ,auth, authorizeRoles("user"),Order );
+router.get('/inprogress_order' ,auth, authorizeRoles("user"),Order.inprogress );
 
-router.get('/order' ,auth, authorizeRoles("user"),Order );
+router.get('/pending_order' ,auth, authorizeRoles("user"),Order.pending );
 
 
 

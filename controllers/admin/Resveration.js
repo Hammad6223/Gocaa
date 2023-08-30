@@ -60,6 +60,19 @@ const DataResveration = {
 
       },
 
+      
+        // Cancel Resveration
+        approveResveration: async (req, resp, next) => {
+
+    
+          await cart.findByIdAndUpdate( { _id: req.params.id }, { status: 'inprogress' })
+          .then((data) => { return next(new errorHandler('Successfully', 200)); })
+          .catch((error) => { return next(new errorHandler(error.message, 400)); });
+    
+     
+    
+          },
+
   //  inprogress 
       inprogressResveration: async (req, resp, next) => {
 
