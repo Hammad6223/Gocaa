@@ -91,7 +91,17 @@ import bcrypt from 'bcryptjs'
  
       else{ 
        
-        new User({ ...req.body.data })
+
+      // Exclude otp and otpExpiration fields
+      const userDataWithoutOTP = {
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        email: req.body.email,
+        password:req.body.password,
+      };
+
+
+        new User({ ...userDataWithoutOTP})
         .save().then(() => { return next(new errorHandler('Successfully', 200,)); })
         .catch((error) => { return next(new errorHandler(error.message, 400,)); })
 
