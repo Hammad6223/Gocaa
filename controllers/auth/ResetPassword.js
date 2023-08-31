@@ -92,16 +92,19 @@ import bcrypt from 'bcryptjs'
       else{ 
        
 
-      // Exclude otp and otpExpiration fields
-      const userDataWithoutOTP = {
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        email: req.body.email,
-        password:req.body.password,
-      };
+        // Assuming you have parsed the request body
+const userData = req.body.data;
+
+// Create a new object without otp and otpExpiration fields
+const userDataWithoutOTP = {
+  firstName: userData.firstName,
+  lastName: userData.lastName,
+  email: userData.email,
+  password: userData.password,
+};
 
 
-        new User({ ...userDataWithoutOTP})
+        new User( {...userDataWithoutOTP })
         .save().then(() => { return next(new errorHandler('Successfully', 200,)); })
         .catch((error) => { return next(new errorHandler(error.message, 400,)); })
 
