@@ -37,16 +37,16 @@ import nodemailer from 'nodemailer'
     const otp = await otpGen();
   const  otpExpiration = new Date(Date.now() + 10 * 60 * 1000); 
    
-     try{
-      const user =  new User({
+     
+      const userData = {
       firstName,
       lastName,
       email,
       password :HashedPassword,
       otp: otp,
       otpExpiration : otpExpiration
-    })
-    await user.save(); 
+    }
+  
     var transporter = nodemailer.createTransport({
       service: 'gmail',
         auth: {
@@ -54,7 +54,7 @@ import nodemailer from 'nodemailer'
           pass: process.env.PASS
         }
       });
-      
+      console.log(userData)
       var mailOptions = {
         from: `'Gocality' <${process.env.EMAIL}>`, 
         to:    email ,
@@ -143,14 +143,12 @@ import nodemailer from 'nodemailer'
       
       transporter.sendMail(mailOptions, function(err, info){
         if(err){ return next(new errorHandler(err.message, 401)); }   
-        else {   return next(new errorHandler( 'Opt send in your email', 200 )) }    }); 
+        else {   return next(new errorHandler( userData, 200 )) }    }); 
 
   
   
-  }
-    catch (error)  {return next(new errorHandler(error.message,500,)); } 
-     
- 
+  
+
    }
 
      
