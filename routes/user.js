@@ -25,7 +25,7 @@ router.post('/cart' ,auth, authorizeRoles("user"),Reservation );
 router.get('/inprogress_order' ,auth, authorizeRoles("user"),Order.inprogress );
 
 router.get('/pending_order' ,auth, authorizeRoles("user"),Order.pending );
-
+router.get('/cancel_order' ,auth, authorizeRoles("user"),Order.cancel );
 
 
 export default router;
