@@ -68,9 +68,7 @@ const DataResveration = {
           await cart.findByIdAndUpdate( { _id: req.params.id }, { status: 'inprogress' })
           .then((data) => { return next(new errorHandler('Successfully', 200)); })
           .catch((error) => { return next(new errorHandler(error.message, 400)); });
-    
-     
-    
+              
           },
 
   //  inprogress 

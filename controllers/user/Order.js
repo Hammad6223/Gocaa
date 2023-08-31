@@ -9,7 +9,7 @@ const Order = {
     inprogress :async  (req,resp,next)=>{
   
 
-   Cart.find({user_id :req.user._id}).select('-vehicle_id').populate('service_id')
+   Cart.find({status : 'inprogress',user_id :req.user._id}).select('-vehicle_id').populate('service_id')
    .populate( {path : 'booking_id', populate:{ path : 'vehicle_id' ,populate: { path: 'feature_id',  model: 'Feature'}}} )
    .populate( {path : 'booking_id', populate:{ path : 'driver_id' } })
    .populate( {path : 'booking_id', populate:{ path : 'package_id' } })  
