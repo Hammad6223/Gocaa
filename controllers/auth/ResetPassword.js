@@ -82,15 +82,21 @@ import bcrypt from 'bcryptjs'
        const { error } = registerSchema.validate(req.body);
        if(error){   return next(new errorHandler(error.message,400,));  }
  
-       user =  await User.findOne({otp:req.body.otp})
+       user =  await User.findOne({email:req.body.email})
        if(!user) {  return next(errorHandler.unAuthorized()); }
  
       if (user.otp !== req.body.otp || user.otpExpiration < new Date()) 
       { 
-        
+        user.deleteOne();
         return next(new errorHandler('Invalid OTP Please try again..',400,));   }
  
-      else{ return next(new errorHandler('Successfully',200,)); }
+      else{ 
+        user.otp = undefined;
+        user.otpExpiration = undefined;
+  
+        // user updated
+        await user.save()
+        return next(new errorHandler('Successfully',200,)); }
  
        },
      

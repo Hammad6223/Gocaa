@@ -10,6 +10,8 @@ router.post('/login' , LoginController );
 
 // SignUp
 router.post('/signup' , SignupController );
+// Verify Otp
+router.post('/signup_verify' , DataReset.SignupverifyOtp );
 
 // Forget
 router.post('/forget' , ForgetController );
