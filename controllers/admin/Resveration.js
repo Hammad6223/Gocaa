@@ -41,8 +41,8 @@ const DataResveration = {
  canceltotalResveration: async (req, resp, next) => {
 
   await cart.find({status : 'rejected'}).populate('user_id').sort({createdAt: -1}).exec()
-    .then((data) => { return next(new errorHandler(data, 200)); })
-    .catch((error) => { return next(new errorHandler(error.message, 400)); });
+  .then((data) => { return next(new errorHandler(data, 200)); })
+  .catch((error) => { return next(new errorHandler(error.message, 400)); });
 
 },
 
@@ -87,7 +87,9 @@ const DataResveration = {
       cart.findById({_id: req.params.id}).select('-vehicle_id').populate('service_id').populate('user_id').populate('package_id')
       .populate( {path : 'booking_id', populate:{ path : 'vehicle_id' ,populate: { path: 'feature_id',  model: 'Feature'}}} )
       .populate( {path : 'booking_id', populate:{ path : 'driver_id' } })
-      .populate( {path : 'booking_id', populate:{ path : 'package_id' } })  .exec()
+      .populate( {path : 'package_booking_id', populate:{path : 'package_booking_data',populate:{ path : 'vehicle_id' ,populate: { path: 'feature_id',  model: 'Feature'} ,} }} )
+      .populate( {path : 'package_booking_id', populate:{path : 'package_booking_data',populate:{ path : 'driver_id' } }} )
+     
        .then( (data) =>{ return next(new errorHandler(data, 200)); })
        .catch((error) =>{return next(new errorHandler(error.message, 400));  }); 
 

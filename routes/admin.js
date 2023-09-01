@@ -75,6 +75,7 @@ router.get('/detail_approve_resveration/:id' , auth, authorizeRoles("admin"), Da
 router.post('/booking/:id' , auth, authorizeRoles("admin"), DataBooking.booking );
 router.post('/package_booking/:id' , auth, authorizeRoles("admin"), DataBooking.packageBooking );
 router.get('/view_booking' , auth, authorizeRoles("admin"), DataBooking.viewBooking );
+router.get('/view_package_booking' , auth, authorizeRoles("admin"), DataBooking.viewPackageBooking );
 //  End Booking Section
 
 

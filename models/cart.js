@@ -18,6 +18,9 @@ const cartSchema = new Schema({
     package_id: [{ type: mongoose.Schema.Types.ObjectId,  ref:'Package' }],
     user_id:{ type: mongoose.Schema.Types.ObjectId,  ref:'User' },
     booking_id:[{ type: mongoose.Schema.Types.ObjectId,  ref:'Booking' }],
+    package_booking_id:[{ type: mongoose.Schema.Types.ObjectId,  ref:'packageBooking' }],
+
+
 
 
    
