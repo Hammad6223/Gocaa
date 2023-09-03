@@ -77,7 +77,7 @@ const DataBooking = {
           startDate: cart.startDate,
           endDate: cart.endDate,
           driver_id: req.body.driver_id,
-          package_id:req.params.id
+          card_id:body.cart_id
         });
     
         const data1 = await newPackageBooking.save();

@@ -13,7 +13,8 @@ const DataResveration = {
   // View Resveration
   latestResveration: async (req, resp, next) => {
 
-    await cart.find({status : 'pending'}).sort({createdAt: -1}).populate('user_id').exec()
+    await cart.find({status : 'pending'}).sort({createdAt: -1}).populate('user_id')
+    .select('-booking_id -vehicle_id -package_id -service_id -package_booking_id').exec()
       .then((data) => { return next(new errorHandler(data, 200)); })
       .catch((error) => { return next(new errorHandler("Something Went wrong", 400)); });
 
@@ -22,7 +23,7 @@ const DataResveration = {
     // Detail Resveration
     detailResveration: async (req, resp, next) => {
 
-      const  resveration =   await cart.findById({_id: req.params.id }).select('-booking_id')
+      const  resveration =   await cart.findById({_id: req.params.id }).select('-booking_id -package_booking_id')
       .populate({path : 'vehicle_id' ,populate: { path: 'feature_id',    model: 'Feature'}}).populate('service_id')
       .populate('package_id').populate('user_id').exec();
       const driver =await Driver.find({}).exec();
@@ -83,13 +84,11 @@ const DataResveration = {
 
          // Detail approve Resveration
     detailapproveResveration: async (req, resp, next) => {
-
+   
       cart.findById({_id: req.params.id}).select('-vehicle_id').populate('service_id').populate('user_id').populate('package_id')
       .populate( {path : 'booking_id', populate:{ path : 'vehicle_id' ,populate: { path: 'feature_id',  model: 'Feature'}}} )
       .populate( {path : 'booking_id', populate:{ path : 'driver_id' } })
-      .populate( {path : 'package_booking_id', populate:{path : 'package_booking_data',populate:{ path : 'vehicle_id' ,populate: { path: 'feature_id',  model: 'Feature'} ,} }} )
-      .populate( {path : 'package_booking_id', populate:{path : 'package_booking_data',populate:{ path : 'driver_id' } }} )
-     
+      
        .then( (data) =>{ return next(new errorHandler(data, 200)); })
        .catch((error) =>{return next(new errorHandler(error.message, 400));  }); 
 
