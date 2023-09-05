@@ -68,6 +68,7 @@ router.get('/approve_resveration/:id' , auth, authorizeRoles("admin"), DataResve
 
 router.get('/inprogress_resveration' , auth, authorizeRoles("admin"), DataResveration.inprogressResveration );
 router.get('/detail_approve_resveration/:id' , auth, authorizeRoles("admin"), DataResveration.detailapproveResveration );
+router.get('/detail_approve_package_resveration/:id' , auth, authorizeRoles("admin"), DataResveration.detailapprovePackageResveration );
 
 //  End Resveration Section
 

@@ -3,6 +3,7 @@ import errorHandler from "../../utills/errorhandler.js";
 import Cart from "../../models/cart.js";
 import Joi from "joi";
 import Booking from "../../models/booking.js";
+import { fcmNotification } from "../../utills/fcmNotification.js";
 
 const Order = {
 
@@ -34,6 +35,13 @@ cancel :async  (req,resp,next)=>{
     .then((data) => { return next(new errorHandler(data, 200)); })
     .catch((error) => { return next(new errorHandler(error.message, 400)); });
 
+},
+
+
+
+notification :async  (req,resp,next)=>{
+
+fcmNotification();
 }
 
 }

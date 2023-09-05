@@ -9,6 +9,7 @@ const BookingDataSchema = new Schema({
     endDate: { type: Date, required: true},
     vehicle_id:{ type: mongoose.Schema.Types.ObjectId,  ref:'Vehicle',required :true },
     driver_id:{ type: mongoose.Schema.Types.ObjectId,  ref:'Driver',required:true },
+    cart_id:{ type: mongoose.Schema.Types.ObjectId,  ref:'Cart'},
     package_id:{ type: mongoose.Schema.Types.ObjectId,  ref:'Package'},
     
 }, {timestamps: true});

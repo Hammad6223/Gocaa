@@ -7,6 +7,7 @@ import fs from "fs-extra";
 import cart from "../../models/cart.js";
 import Driver from "../../models/driver.js";
 import Booking from "../../models/booking.js";
+import packagebookingdata from '../../models/packageBookingData.js'
 
 const DataResveration = {
 
@@ -75,7 +76,8 @@ const DataResveration = {
   //  inprogress 
       inprogressResveration: async (req, resp, next) => {
 
-        await cart.find({status : 'inprogress'}).sort({createdAt: -1}).populate('user_id').exec()
+        await cart.find({status : 'inprogress'}).sort({createdAt: -1}).populate('user_id')
+        .select('-booking_id -vehicle_id -package_id -service_id -package_booking_id').exec()
           .then((data) => { return next(new errorHandler(data, 200)); })
           .catch((error) => { return next(new errorHandler(error.message, 400)); });
       
@@ -85,7 +87,7 @@ const DataResveration = {
          // Detail approve Resveration
     detailapproveResveration: async (req, resp, next) => {
    
-      cart.findById({_id: req.params.id}).select('-vehicle_id').populate('service_id').populate('user_id').populate('package_id')
+      cart.findById({_id: req.params.id}).select('-vehicle_id -package_booking_id').populate('service_id').populate('user_id').populate('package_id')
       .populate( {path : 'booking_id', populate:{ path : 'vehicle_id' ,populate: { path: 'feature_id',  model: 'Feature'}}} )
       .populate( {path : 'booking_id', populate:{ path : 'driver_id' } })
       
@@ -94,6 +96,36 @@ const DataResveration = {
 
      
       },
+
+      detailapprovePackageResveration: async (req, resp, next) => {
+
+        // cart.findById({_id: req.params.id}).select('-vehicle_id -service_id -package_id -booking_id -user_id')
+        // .populate( {path : 'package_booking_id', populate:{path : 'package_booking_data',populate:{ path : 'vehicle_id' ,populate: { path: 'feature_id',  model: 'Feature'} ,} }} )
+        // .populate( {path : 'package_booking_id', populate:{path : 'package_booking_data',populate:{ path : 'driver_id' } }} )
+        // .populate( {path : 'package_booking_id',populate:{ path : 'package_id' ,populate: { path: 'service_id', }  , select: '-vehicle_id' }  } )
+
+        //  .then( (data) =>{ 
+       
+        //   return next(new errorHandler(data, 200)); })
+        //  .catch((error) =>{return next(new errorHandler(error.message, 400));  });
+        const idsParam = req.params.id;
+
+  // Split the parameter string using the hyphen as the delimiter
+  const idsArray = idsParam.split('-');
+
+  // Now you have an array with two IDs
+  const id1 = idsArray[0];
+  const id2 = idsArray[1];
+
+        packagebookingdata.find({  $or: [ {package_id:id2 },{card_id:id1  }] } )
+        .populate( { path : 'vehicle_id' ,populate: { path: 'feature_id',  model: 'Feature'}} )
+        .populate(  'driver_id')
+    .then( (data) =>{ 
+       console.log(data)
+          return next(new errorHandler(data, 200)); })
+         .catch((error) =>{return next(new errorHandler(error.message, 400));  });
+       
+        },
 
 
 }

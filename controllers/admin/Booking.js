@@ -49,6 +49,8 @@ const DataBooking = {
   },
 
   packageBooking: async (req, resp, next) => {
+
+    console.log(req.body)
   
     try {
       const cart = await Cart.findById(req.body.cart_id).exec();
@@ -77,10 +79,12 @@ const DataBooking = {
           startDate: cart.startDate,
           endDate: cart.endDate,
           driver_id: req.body.driver_id,
-          card_id:body.cart_id
+          cart_id:req.body.cart_id,
+          package_id: req.params.id,
         });
     
         const data1 = await newPackageBooking.save();
+        console.log('data1',data1)
     
         // Check if a package booking for the same package_id already exists
         const existingPackageBooking = await packageBooking.findOne({
@@ -111,6 +115,7 @@ const DataBooking = {
         return next(new errorHandler('Driver cannot be free', 400));
       }
     } catch (error) {
+      console.log(error)
       return next(new errorHandler(error.message, 400));
     }
     

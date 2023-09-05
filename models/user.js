@@ -23,6 +23,7 @@ const userSchema = new Schema({
     image: {type: String},  
     otp: String,
     otpExpiration: Date,
+    fcmTokens: { type: [String],  },
    
 }, {timestamps: true});
 

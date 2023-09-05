@@ -27,5 +27,6 @@ router.get('/inprogress_order' ,auth, authorizeRoles("user"),Order.inprogress );
 router.get('/pending_order' ,auth, authorizeRoles("user"),Order.pending );
 router.get('/cancel_order' ,auth, authorizeRoles("user"),Order.cancel );
 
+router.get('/notification' ,auth, authorizeRoles("user"),Order.notification );
 
 export default router;
