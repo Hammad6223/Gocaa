@@ -8,7 +8,9 @@ import cart from "../../models/cart.js";
 import Driver from "../../models/driver.js";
 import Booking from "../../models/booking.js";
 import packagebookingdata from '../../models/packageBookingData.js'
-
+import { fcmNotification } from "../../utills/fcmNotification.js";
+import User from "../../models/user.js";
+import Notification from '../../models/notification.js'
 const DataResveration = {
 
   // View Resveration
@@ -67,10 +69,28 @@ const DataResveration = {
         approveResveration: async (req, resp, next) => {
 
     
-          await cart.findByIdAndUpdate( { _id: req.params.id }, { status: 'inprogress' })
-          .then((data) => { return next(new errorHandler('Successfully', 200)); })
-          .catch((error) => { return next(new errorHandler(error.message, 400)); });
-              
+          try {
+            const cartUpdate = await cart.findByIdAndUpdate(req.params.id, { status: 'pending' });
+          
+            const user = await User.findById(cartUpdate.user_id);
+          
+       
+
+            const data =   { title: 'Order Inprogress', body: 'your order status is in-progress complete your payment '}
+
+            new Notification({...data , user_id :user._id }).save();
+    
+        
+
+            fcmNotification(data,user.fcmTokens)
+          
+            // Call your fcmNotification function here if needed
+          
+            return next(new errorHandler('Successfully', 200));
+          } catch (error) {
+            return next(new errorHandler("Something went wrong", 500));
+          }
+          
           },
 
   //  inprogress 
@@ -99,15 +119,6 @@ const DataResveration = {
 
       detailapprovePackageResveration: async (req, resp, next) => {
 
-        // cart.findById({_id: req.params.id}).select('-vehicle_id -service_id -package_id -booking_id -user_id')
-        // .populate( {path : 'package_booking_id', populate:{path : 'package_booking_data',populate:{ path : 'vehicle_id' ,populate: { path: 'feature_id',  model: 'Feature'} ,} }} )
-        // .populate( {path : 'package_booking_id', populate:{path : 'package_booking_data',populate:{ path : 'driver_id' } }} )
-        // .populate( {path : 'package_booking_id',populate:{ path : 'package_id' ,populate: { path: 'service_id', }  , select: '-vehicle_id' }  } )
-
-        //  .then( (data) =>{ 
-       
-        //   return next(new errorHandler(data, 200)); })
-        //  .catch((error) =>{return next(new errorHandler(error.message, 400));  });
         const idsParam = req.params.id;
 
   // Split the parameter string using the hyphen as the delimiter
@@ -120,7 +131,7 @@ const DataResveration = {
         packagebookingdata.find({  $or: [ {package_id:id2 },{card_id:id1  }] } )
         .populate( { path : 'vehicle_id' ,populate: { path: 'feature_id',  model: 'Feature'}} )
         .populate(  'driver_id')
-    .then( (data) =>{ 
+        .then( (data) =>{ 
        console.log(data)
           return next(new errorHandler(data, 200)); })
          .catch((error) =>{return next(new errorHandler(error.message, 400));  });

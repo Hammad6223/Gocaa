@@ -1,3 +1,6 @@
+
+
+
 import admin from 'firebase-admin';
 import fs from 'fs';
 
@@ -15,21 +18,25 @@ import fs from 'fs';
     
     // Now you can use the Firebase Admin SDK
   });
-export const fcmNotification = async () => {
+export const fcmNotification = async (data , tokens) => {
+
+  tokens.map((item,index)=>{
+
+
     const message = {
-        notification: {
-          title: 'New Message',
-          body: 'You have a new message!',
-        },
-        token: 'c8uQJjptS6yj2s1jvFfpWO:APA91bGmKbt5hjzCjjf-BPqcjnHBLgVXGRTyvUGYQ68SM1cxoRXNI4vDp51pXKRS5oYEkVkjQz0uOYbkBG9O7_hmPnJwlY9AS1LqQphxe4wPupKDHnLOXkJt811bAQ_bL3wODhncSKVq', // The device token of the recipient
+        notification: data ,
+        token: item
       };
       
       // Send the message
       admin.messaging().send(message)
         .then((response) => {
-          console.log('Notification sent:', response);
+        console.log('Notification sent:', response);
         })
         .catch((error) => {
-          console.error('Error sending notification:', error);
+        console.error('Error sending notification:', error);
         });
+
+
+      })
 }
