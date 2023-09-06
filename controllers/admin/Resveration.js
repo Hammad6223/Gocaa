@@ -71,7 +71,7 @@ const DataResveration = {
 
     
           try {
-            const cartUpdate = await cart.findByIdAndUpdate(req.params.id, { status: 'inprogress' });
+            const cartUpdate = await cart.findByIdAndUpdate(req.params.id, { status: 'pending' });
           
             const user = await User.findById(cartUpdate.user_id);
 
@@ -79,21 +79,32 @@ const DataResveration = {
               // Convert the ObjectId back to a string
              const objectIdHexString = objectId.toHexString();
 
+
          // Extract the last 4 characters (digits)
         const last4Digits = objectIdHexString.slice(-4);
       
             const noti =   { title: 'Order Inprogress', body: `your order ID  ${last4Digits} is in-progress complete your payment`}
-            // const data =   { total_price: cartUpdate.totalPrice, id:cartUpdate._id}
-
+       const data = objectId 
+       
+            // const data =    await cart.findById({_id : cartUpdate._id } ).select('-vehicle_id -package_id -user_id').populate('service_id')
+            // .populate( {path : 'booking_id', populate:{ path : 'vehicle_id' ,populate: { path: 'feature_id',  model: 'Feature'}}} )
+            // .populate( {path : 'booking_id', populate:{ path : 'driver_id' } }) 
+            // .populate( {path : 'package_booking_id', populate:{path : 'package_booking_data',populate:{ path : 'vehicle_id' ,populate: { path: 'feature_id',  model: 'Feature'} ,} }} )
+            // .populate( {path : 'package_booking_id', populate:{path : 'package_booking_data',populate:{ path : 'driver_id' } }} )
+            // .populate( {path : 'package_booking_id',populate:{ path : 'package_id' ,populate: { path: 'service_id', }  , select: '-vehicle_id' }  } )
+            // .exec()
+          
+              
+              
             new Notification({...noti , user_id :user._id  }).save();
     
         
 
-            fcmNotification(noti,user.fcmTokens)
+            fcmNotification(noti,user.fcmTokens ,data)
           
-            // Call your fcmNotification function here if needed
+            // // Call your fcmNotification function here if needed
           
-            return next(new errorHandler('Successfully', 200));
+            return next(new errorHandler("Successfully", 200));
           } catch (error) {
             return next(new errorHandler("Something went wrong", 500));
           }
