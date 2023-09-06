@@ -11,6 +11,7 @@ import packagebookingdata from '../../models/packageBookingData.js'
 import { fcmNotification } from "../../utills/fcmNotification.js";
 import User from "../../models/user.js";
 import Notification from '../../models/notification.js'
+import { ObjectId } from "mongodb";
 const DataResveration = {
 
   // View Resveration
@@ -73,10 +74,14 @@ const DataResveration = {
             const cartUpdate = await cart.findByIdAndUpdate(req.params.id, { status: 'pending' });
           
             const user = await User.findById(cartUpdate.user_id);
-          const id1 =cartUpdate._id;
-          console.log(id1)
-            const last4Digits = id1.slice(-4);
-        console.log(last4Digits)
+
+            const objectId = new ObjectId(cartUpdate._id);
+              // Convert the ObjectId back to a string
+             const objectIdHexString = objectId.toHexString();
+
+         // Extract the last 4 characters (digits)
+        const last4Digits = objectIdHexString.slice(-4);
+      
             const noti =   { title: 'Order Inprogress', body: `your order ID  ${last4Digits}is in-progress complete your payment`}
             // const data =   { total_price: cartUpdate.totalPrice, id:cartUpdate._id}
 
