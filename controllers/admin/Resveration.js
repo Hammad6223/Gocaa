@@ -74,9 +74,9 @@ const DataResveration = {
           
             const user = await User.findById(cartUpdate.user_id);
           
-       
+            const last4Digits = cartUpdate._id.slice(-4);
 
-            const noti =   { title: 'Order Inprogress', body: 'your order status is in-progress complete your payment '}
+            const noti =   { title: 'Order Inprogress', body: `your order ID  ${last4Digits}is in-progress complete your payment`}
             // const data =   { total_price: cartUpdate.totalPrice, id:cartUpdate._id}
 
             new Notification({...noti , user_id :user._id  }).save();

@@ -28,7 +28,7 @@ router.get('/pending_order' ,auth, authorizeRoles("user"),Order.pending );
 router.get('/cancel_order' ,auth, authorizeRoles("user"),Order.cancel );
 
 
-router.get('/payment-sheet' ,auth, authorizeRoles("user"),Payment );
+router.post('/payment-sheet' ,auth, authorizeRoles("user"),Payment );
 
 
 router.get('/check_notification' ,auth, authorizeRoles("user"),Order.notification );
