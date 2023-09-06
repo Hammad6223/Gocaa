@@ -24,7 +24,7 @@ const Order = {
 orderpayment :async  (req,resp,next)=>{
   
 
-  Cart.find({_id:req.body.card_id}).select('-vehicle_id -package_id -user_id').populate('service_id')
+  Cart.find({_id:req.body.cart_id}).select('-vehicle_id -package_id -user_id').populate('service_id')
   .populate( {path : 'booking_id', populate:{ path : 'vehicle_id' ,populate: { path: 'feature_id',  model: 'Feature'}}} )
   .populate( {path : 'booking_id', populate:{ path : 'driver_id' } }) 
   .populate( {path : 'package_booking_id', populate:{path : 'package_booking_data',populate:{ path : 'vehicle_id' ,populate: { path: 'feature_id',  model: 'Feature'} ,} }} )

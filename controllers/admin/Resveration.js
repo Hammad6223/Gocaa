@@ -86,17 +86,10 @@ const DataResveration = {
             const noti =   { title: 'Order Inprogress', body: `your order ID  ${last4Digits} is in-progress complete your payment`}
        const data = objectId 
        
-            // const data =    await cart.findById({_id : cartUpdate._id } ).select('-vehicle_id -package_id -user_id').populate('service_id')
-            // .populate( {path : 'booking_id', populate:{ path : 'vehicle_id' ,populate: { path: 'feature_id',  model: 'Feature'}}} )
-            // .populate( {path : 'booking_id', populate:{ path : 'driver_id' } }) 
-            // .populate( {path : 'package_booking_id', populate:{path : 'package_booking_data',populate:{ path : 'vehicle_id' ,populate: { path: 'feature_id',  model: 'Feature'} ,} }} )
-            // .populate( {path : 'package_booking_id', populate:{path : 'package_booking_data',populate:{ path : 'driver_id' } }} )
-            // .populate( {path : 'package_booking_id',populate:{ path : 'package_id' ,populate: { path: 'service_id', }  , select: '-vehicle_id' }  } )
-            // .exec()
-          
+     
               
               
-            new Notification({...noti , user_id :user._id  }).save();
+            new Notification({...noti , user_id :user._id  ,cart_id:cartUpdate._id}).save();
     
         
 
