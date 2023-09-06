@@ -71,7 +71,7 @@ const DataResveration = {
 
     
           try {
-            const cartUpdate = await cart.findByIdAndUpdate(req.params.id, { status: 'pending' });
+            const cartUpdate = await cart.findByIdAndUpdate(req.params.id, { status: 'inprogress' });
           
             const user = await User.findById(cartUpdate.user_id);
 
@@ -82,7 +82,7 @@ const DataResveration = {
          // Extract the last 4 characters (digits)
         const last4Digits = objectIdHexString.slice(-4);
       
-            const noti =   { title: 'Order Inprogress', body: `your order ID  ${last4Digits}is in-progress complete your payment`}
+            const noti =   { title: 'Order Inprogress', body: `your order ID  ${last4Digits} is in-progress complete your payment`}
             // const data =   { total_price: cartUpdate.totalPrice, id:cartUpdate._id}
 
             new Notification({...noti , user_id :user._id  }).save();
