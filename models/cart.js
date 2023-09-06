@@ -12,7 +12,7 @@ const cartSchema = new Schema({
     endTime: { type: String, required: true},
     reason : { type: String, required: true},
     location :{type:String,required: true},
-    status: { type: String, enum: ['pending', 'approved', 'rejected','inprogress'],  default: 'pending', },
+    status: { type: String, enum: ['pending', 'approved', 'rejected','inprogress','onboarding'],  default: 'pending', },
     vehicle_id:[{ type: mongoose.Schema.Types.ObjectId,  ref:'Vehicle' }],
     service_id: [{ type: mongoose.Schema.Types.ObjectId,  ref:'Service' }],
     package_id: [{ type: mongoose.Schema.Types.ObjectId,  ref:'Package' }],
