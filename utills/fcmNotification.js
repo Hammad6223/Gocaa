@@ -18,13 +18,17 @@ import fs from 'fs';
     
     // Now you can use the Firebase Admin SDK
   });
-export const fcmNotification = async (data , tokens) => {
+export const fcmNotification = async (noti, tokens) => {
 
+ 
   tokens.map((item,index)=>{
 
 
     const message = {
-        notification: data ,
+        notification: noti ,
+        // data : 
+        //   { total_price: '1046.28', id: "64f744390d6239a3970b2dff" ,screen:"Payment"},
+        
         token: item
       };
       

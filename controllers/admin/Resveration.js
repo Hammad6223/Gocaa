@@ -70,19 +70,20 @@ const DataResveration = {
 
     
           try {
-            const cartUpdate = await cart.findByIdAndUpdate(req.params.id, { status: 'pending' });
+            const cartUpdate = await cart.findByIdAndUpdate(req.params.id, { status: 'inprogress' });
           
             const user = await User.findById(cartUpdate.user_id);
           
        
 
-            const data =   { title: 'Order Inprogress', body: 'your order status is in-progress complete your payment '}
+            const noti =   { title: 'Order Inprogress', body: 'your order status is in-progress complete your payment '}
+            // const data =   { total_price: cartUpdate.totalPrice, id:cartUpdate._id}
 
-            new Notification({...data , user_id :user._id }).save();
+            new Notification({...noti , user_id :user._id  }).save();
     
         
 
-            fcmNotification(data,user.fcmTokens)
+            fcmNotification(noti,user.fcmTokens)
           
             // Call your fcmNotification function here if needed
           
@@ -106,6 +107,7 @@ const DataResveration = {
 
          // Detail approve Resveration
     detailapproveResveration: async (req, resp, next) => {
+      console.log('ss')
    
       cart.findById({_id: req.params.id}).select('-vehicle_id -package_booking_id').populate('service_id').populate('user_id').populate('package_id')
       .populate( {path : 'booking_id', populate:{ path : 'vehicle_id' ,populate: { path: 'feature_id',  model: 'Feature'}}} )

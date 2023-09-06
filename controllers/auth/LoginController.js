@@ -16,7 +16,7 @@ config();
       const registerSchema = Joi.object({
       email: Joi.string().email().required(),
       password: Joi.string().required(),
-      fcmToken: Joi.string().required(),
+   
       });
 
 
@@ -44,10 +44,14 @@ config();
     if(err){ return next(new errorHandler(err.message, 401)); }   
     else {   
       // fcm token
+      if(user.role =='user'){
     User.findByIdAndUpdate( { _id: user._id, },  { $addToSet: { fcmTokens: fcmToken } },).exec()
       .then(() => { return next(new errorHandler(token, 200)); })
       .catch((error) => { return next(new errorHandler(error.message, 400)); });
-
+      }
+      else{
+        return next(new errorHandler(token, 200)); 
+      }
     }
  }); 
     }
