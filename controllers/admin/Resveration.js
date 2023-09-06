@@ -70,12 +70,13 @@ const DataResveration = {
 
     
           try {
-            const cartUpdate = await cart.findByIdAndUpdate(req.params.id, { status: 'inprogress' });
+            const cartUpdate = await cart.findByIdAndUpdate(req.params.id, { status: 'pending' });
           
             const user = await User.findById(cartUpdate.user_id);
-          
-            const last4Digits = cartUpdate._id.slice(-4);
-
+          const id1 =cartUpdate._id;
+          console.log(id1)
+            const last4Digits = id1.slice(-4);
+        console.log(last4Digits)
             const noti =   { title: 'Order Inprogress', body: `your order ID  ${last4Digits}is in-progress complete your payment`}
             // const data =   { total_price: cartUpdate.totalPrice, id:cartUpdate._id}
 
