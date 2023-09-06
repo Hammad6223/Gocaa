@@ -1,6 +1,7 @@
 
 import stripe from "stripe";
 import Cart from "../../models/cart.js";
+import User from '../../models/user.js'
 
 // Initialize Stripe with your API key
 const stripeClient = stripe('sk_test_51NiFpUAGRNlD1CLmzzBAgYZBsMdKGcrYVEYdO7zxSXPmYRub4M5cOTlN5eXRudVOSlr9eRW06LyC0Hemk2MUJwDd00NZzLzOhM');
@@ -8,8 +9,12 @@ const stripeClient = stripe('sk_test_51NiFpUAGRNlD1CLmzzBAgYZBsMdKGcrYVEYdO7zxSX
 const Payment = async (req, resp, next) => {
   const { amount, currency ,order_id} = req.body;
   console.log(currency);
+
+  const user = await User.findById({ _id: req.user._id }) ;
   // Use an existing Customer ID if this is a returning omer.
-  const customer = await stripeClient.customers.create();
+  const customer = await stripeClient.customers.create({
+    email:user.email
+  });
   const ephemeralKey = await stripeClient.ephemeralKeys.create(
     { customer: customer.id },
     { apiVersion: '2023-08-16'},
