@@ -70,6 +70,8 @@ router.get('/inprogress_resveration' , auth, authorizeRoles("admin"), DataResver
 router.get('/detail_approve_resveration/:id' , auth, authorizeRoles("admin"), DataResveration.detailapproveResveration );
 router.get('/detail_approve_package_resveration/:id' , auth, authorizeRoles("admin"), DataResveration.detailapprovePackageResveration );
 
+router.get('/onboarding_resveration' , auth, authorizeRoles("admin"), DataResveration.onBoardingResveration );
+
 //  End Resveration Section
 
 // Booking  Section
