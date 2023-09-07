@@ -27,7 +27,7 @@ router.get('/onboarding_order' ,auth, authorizeRoles("user"),Order.onboarding );
 
 router.get('/pending_order' ,auth, authorizeRoles("user"),Order.pending );
 router.get('/cancel_order' ,auth, authorizeRoles("user"),Order.cancel );
-router.post('/order_payment' ,auth, authorizeRoles("user"),Order.orderpayment );
+router.post('/order_payment' ,auth,Order.orderpayment );
 
 
 router.post('/payment-sheet' ,auth, authorizeRoles("user"),Payment );
