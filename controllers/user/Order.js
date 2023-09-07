@@ -54,7 +54,10 @@ orderpayment :async  (req,resp,next)=>{
 
  pending :async  (req,resp,next)=>{
 
-    await Cart.find({status : 'pending' ,user_id :req.user._id}).populate({ path : 'vehicle_id' ,populate: { path: 'feature_id',  model: 'Feature'}}).populate('service_id').populate( {path:'package_id',populate:{path : 'vehicle_id' ,populate: { path: 'feature_id',    model: 'Feature'}}}).exec()
+    await Cart.find({status : 'pending' ,user_id :req.user._id}).populate({ path : 'vehicle_id' ,populate: { path: 'feature_id',  model: 'Feature'}}).populate('service_id')
+    .populate( {path:'package_id',populate:{path : 'vehicle_id' ,populate: { path: 'feature_id',    model: 'Feature'}}})
+    .populate( {path:'package_id',populate:{path : 'service_id' }})
+    .exec()
       .then((data) => { return next(new errorHandler(data, 200)); })
       .catch((error) => { return next(new errorHandler(error.message, 400)); });
 

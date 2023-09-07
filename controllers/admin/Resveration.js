@@ -71,7 +71,7 @@ const DataResveration = {
 
 
     try {
-      const cartUpdate = await cart.findByIdAndUpdate(req.params.id, { status: 'pending' });
+      const cartUpdate = await cart.findByIdAndUpdate(req.params.id, { status: 'inprogress' });
 
       const user = await User.findById(cartUpdate.user_id);
 
