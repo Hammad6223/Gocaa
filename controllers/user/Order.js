@@ -24,7 +24,7 @@ const Order = {
 onboarding :async  (req,resp,next)=>{
   
 
-  Cart.find({status : 'onboarding',user_id :req.user._id}).sort({ createdAt: -1 }).select('-vehicle_id -package_id -user_id').populate('service_id')
+  Cart.find({status : 'onBoarding',user_id :req.user._id}).sort({ createdAt: -1 }).select('-vehicle_id -package_id -user_id').populate('service_id')
   .populate( {path : 'booking_id', populate:{ path : 'vehicle_id' ,populate: { path: 'feature_id',  model: 'Feature'}}} )
   .populate( {path : 'booking_id', populate:{ path : 'driver_id' } }) 
   .populate( {path : 'package_booking_id', populate:{path : 'package_booking_data',populate:{ path : 'vehicle_id' ,populate: { path: 'feature_id',  model: 'Feature'} ,} }} )

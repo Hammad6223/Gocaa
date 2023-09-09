@@ -90,7 +90,8 @@ const DataBooking = {
     
         // Check if a package booking for the same package_id already exists
         const existingPackageBooking = await packageBooking.findOne({
-          package_id: req.params.id
+          package_id: req.params.id,
+          cart_id:req.body.cart_id,
         }).exec();
     
         let data2 = null;
@@ -103,7 +104,8 @@ const DataBooking = {
           // Create a new package booking if none exists for the package_id
           const newPackageBooking = new packageBooking({
             package_id: req.params.id,
-            package_booking_data: [data1._id]
+            package_booking_data: [data1._id],
+            cart_id:req.body.cart_id,
           });
           data2 = await newPackageBooking.save();
           await Cart.findByIdAndUpdate(req.body.cart_id, {$push: { package_booking_id: data2._id }}, { runValidators: true });
