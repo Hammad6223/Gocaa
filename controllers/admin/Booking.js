@@ -15,19 +15,21 @@ const DataBooking = {
     console.log(req.body)
     
     const res = await Cart.findById(req.params.id).exec();
+    console.log(res)
 
    
     const data = await Booking.find({
-      driver_id: req.body.driver_id,  $or: [  { startDate: { $gte: new Date(res.startDate) } },  { endDate: { $lte: new Date(res.endDate) } }] });
-     
+      driver_id: req.body.driver_id,  $and: [  { startDate: { $gte: res.startDate } },  { endDate: { $lte: res.endDate } }] });
+     console.log('1111111111',data)
       const checkBookingData = await packageBookingData.find({
         driver_id: req.body.driver_id,
-        $or: [
-          { startDate: { $gte: new Date(res.startDate) } },
-          { endDate: { $lte: new Date(res.endDate) } }
+        $and: [
+          { startDate: { $gte: res.startDate } },
+          { endDate: { $lte: res.endDate } }
         ]
       });
 
+      console.log('22222222222',checkBookingData)
     if(data.length === 0  && checkBookingData.length ===0) {
     new Booking({ ...req.body, cart_id:req.params.id,startDate:res.startDate ,endDate:res.endDate })
     .save().then( (data) =>{
@@ -58,7 +60,7 @@ const DataBooking = {
       // Find bookings and package bookings that overlap with the cart's date range
       const bookingData = await Booking.find({
         driver_id: req.body.driver_id,
-        $or: [
+        $and: [
           { startDate: { $gte: new Date(cart.startDate) } },
           { endDate: { $lte: new Date(cart.endDate) } }
         ]
@@ -66,7 +68,7 @@ const DataBooking = {
     
       const checkBookingData = await packageBookingData.find({
         driver_id: req.body.driver_id,
-        $or: [
+        $and: [
           { startDate: { $gte: new Date(cart.startDate) } },
           { endDate: { $lte: new Date(cart.endDate) } }
         ]
