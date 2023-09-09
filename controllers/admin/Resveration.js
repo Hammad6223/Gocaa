@@ -117,7 +117,7 @@ const DataResveration = {
       //  Onboarding
       onBoardingResveration: async (req, resp, next) => {
 
-      await cart.find({ status: 'onboarding' }).sort({ createdAt: -1 }).populate('user_id')
+      await cart.find({ status: 'onBoarding' }).sort({ createdAt: -1 }).populate('user_id')
         .select('-booking_id -vehicle_id -package_id -service_id -package_booking_id').exec()
         .then((data) => { return next(new errorHandler(data, 200)); })
         .catch((error) => { return next(new errorHandler(error.message, 400)); });

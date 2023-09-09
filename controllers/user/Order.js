@@ -10,7 +10,7 @@ const Order = {
     inprogress :async  (req,resp,next)=>{
   
 
-   Cart.find({status : 'inprogress',user_id :req.user._id}).select('-vehicle_id -package_id -user_id').populate('service_id')
+   Cart.find({status : 'inprogress',user_id :req.user._id}).sort({ createdAt: -1 }).select('-vehicle_id -package_id -user_id').populate('service_id')
    .populate( {path : 'booking_id', populate:{ path : 'vehicle_id' ,populate: { path: 'feature_id',  model: 'Feature'}}} )
    .populate( {path : 'booking_id', populate:{ path : 'driver_id' } }) 
    .populate( {path : 'package_booking_id', populate:{path : 'package_booking_data',populate:{ path : 'vehicle_id' ,populate: { path: 'feature_id',  model: 'Feature'} ,} }} )
@@ -24,7 +24,7 @@ const Order = {
 onboarding :async  (req,resp,next)=>{
   
 
-  Cart.find({status : 'onboarding',user_id :req.user._id}).select('-vehicle_id -package_id -user_id').populate('service_id')
+  Cart.find({status : 'onboarding',user_id :req.user._id}).sort({ createdAt: -1 }).select('-vehicle_id -package_id -user_id').populate('service_id')
   .populate( {path : 'booking_id', populate:{ path : 'vehicle_id' ,populate: { path: 'feature_id',  model: 'Feature'}}} )
   .populate( {path : 'booking_id', populate:{ path : 'driver_id' } }) 
   .populate( {path : 'package_booking_id', populate:{path : 'package_booking_data',populate:{ path : 'vehicle_id' ,populate: { path: 'feature_id',  model: 'Feature'} ,} }} )
@@ -37,9 +37,9 @@ onboarding :async  (req,resp,next)=>{
 
 
 orderpayment :async  (req,resp,next)=>{
-  
+  console.log(req.body)
 
-  Cart.find({_id:req.body.cart_id}).select('-vehicle_id -package_id -user_id').populate('service_id')
+  Cart.find({_id:req.body.cart_id}).select('-vehicle_id -package_id -user_id').sort({ createdAt: -1 }).populate('service_id')
   .populate( {path : 'booking_id', populate:{ path : 'vehicle_id' ,populate: { path: 'feature_id',  model: 'Feature'}}} )
   .populate( {path : 'booking_id', populate:{ path : 'driver_id' } }) 
   .populate( {path : 'package_booking_id', populate:{path : 'package_booking_data',populate:{ path : 'vehicle_id' ,populate: { path: 'feature_id',  model: 'Feature'} ,} }} )
@@ -54,7 +54,7 @@ orderpayment :async  (req,resp,next)=>{
 
  pending :async  (req,resp,next)=>{
 
-    await Cart.find({status : 'pending' ,user_id :req.user._id}).populate({ path : 'vehicle_id' ,populate: { path: 'feature_id',  model: 'Feature'}}).populate('service_id')
+    await Cart.find({status : 'pending' ,user_id :req.user._id}).sort({ createdAt: -1 }).populate({ path : 'vehicle_id' ,populate: { path: 'feature_id',  model: 'Feature'}}).populate('service_id')
     .populate( {path:'package_id',populate:{path : 'vehicle_id' ,populate: { path: 'feature_id',    model: 'Feature'}}})
     .populate( {path:'package_id',populate:{path : 'service_id' }})
     .exec()
@@ -65,7 +65,7 @@ orderpayment :async  (req,resp,next)=>{
 
 cancel :async  (req,resp,next)=>{
 
-  await Cart.find({status : 'rejected' ,user_id :req.user._id}).populate({ path : 'vehicle_id' ,populate: { path: 'feature_id',  model: 'Feature'}}).populate('service_id').populate( {path:'package_id',populate:{path : 'vehicle_id' ,populate: { path: 'feature_id',    model: 'Feature'}}}).exec()
+  await Cart.find({status : 'rejected' ,user_id :req.user._id}).sort({ createdAt: -1 }).populate({ path : 'vehicle_id' ,populate: { path: 'feature_id',  model: 'Feature'}}).populate('service_id').populate( {path:'package_id',populate:{path : 'vehicle_id' ,populate: { path: 'feature_id',    model: 'Feature'}}}).exec()
     .then((data) => { return next(new errorHandler(data, 200)); })
     .catch((error) => { return next(new errorHandler(error.message, 400)); });
 
