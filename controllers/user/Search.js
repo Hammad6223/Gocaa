@@ -10,8 +10,8 @@ import Vehicle from "../../models/vehicle.js";
 
     try{
     
-      const Featured =  await Vehicle.find({featured: true}).populate(['feature_id']).exec();
-      const Vehicles  = await Vehicle.find({featured: false}).populate(['feature_id']).exec();
+      const Featured =  await Vehicle.find({featured: true}).populate(['feature_id']).select('-dealer_id').exec();
+      const Vehicles  = await Vehicle.find({featured: false}).populate(['feature_id']).select('-dealer_id').exec();
    
       const combinedData = {
         Featured : Featured  ,

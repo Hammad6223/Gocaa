@@ -22,7 +22,7 @@ router.post('/edit_dealer/:id' ,auth, authorizeRoles("admin"), upload.fields([{ 
 
 
 //  Vehicle Section
-router.post('/add_vehicle' , auth, authorizeRoles("admin"),  upload.single('image') ,DataVehicle.addVehicle );
+router.post('/add_vehicle' , auth, authorizeRoles("admin"), upload.array('image') ,DataVehicle.addVehicle );
 router.get('/view_vehicle' , auth, authorizeRoles("admin"), DataVehicle.viewVehicle );
 router.get('/detail_vehicle/:id' , auth, authorizeRoles("admin"), DataVehicle.DetailVehicle );
 router.get('/featured/:id' , auth, authorizeRoles("admin"), DataVehicle.featured );

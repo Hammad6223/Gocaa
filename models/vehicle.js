@@ -26,7 +26,7 @@ const vehicleSchema = new Schema({
     airBags: {type: Boolean},
     climateControl: {type: Boolean},  
     airConditioning: {type: Boolean },
-    image: { type: String,required: true},
+    image: [{ type: String,required: true}],
     dealer_id: { type: mongoose.Schema.Types.ObjectId,  ref:'Dealer',required: true },
     feature_id: [{ type: mongoose.Schema.Types.ObjectId,  ref:'Feature' }],
 }, {timestamps: true});

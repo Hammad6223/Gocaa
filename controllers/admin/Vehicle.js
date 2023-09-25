@@ -6,12 +6,14 @@ import fs from "fs-extra";
 import Feature from "../../models/feature.js";
 
 const DataVehicle = {
+  
 
   addVehicle: async (req, resp, next) => {
 
+    console.log(req.files)
+    
 
-    // check image
-    if (!req.file) { return next(new errorHandler('Primary image is required', 400)); }
+    if (!req.files || req.files.length === 0) { return next(new errorHandler('one image is required', 400)); }
 
     //Validation
     const VehicleSchema = Joi.object({
@@ -35,21 +37,24 @@ const DataVehicle = {
     const { error } = VehicleSchema.validate(req.body);
     if (error) { return next(new errorHandler(error.message, 400,)); }
 
+    let paths = [];
+
+    for (var i = 0; i < req.files.length; i++) {
+    await cloudinary.v2.uploader.upload(req.files[i].path, { folder: "Gocaltity" }, async (error, result) => {
 
 
-    // Upload Cloudianry
-    await cloudinary.v2.uploader.upload(req.file.path, { folder: "Gocaltity" }, async (error, result) => {
+        if (error) { return next(new errorHandler(error, 400,)); }
+        paths.push(result.public_id)
+        await fs.remove(req.files[i].path);
 
-      if (error) { return next(new errorHandler(error, 400,)); }
+      })
+    }
 
-      // delete multer image
-      await fs.remove(req.file.path);
+    new Vehicle({ ...req.body, image: paths, feature_id: JSON.parse(req.body.feature_id) })
+      .save().then(() => { return next(new errorHandler('Successfully', 200,)); })
+      .catch((error) => { return next(new errorHandler(error.message, 400,)); })
 
-      new Vehicle({ ...req.body, image: result.public_id, feature_id: JSON.parse(req.body.feature_id) })
-        .save().then(() => { return next(new errorHandler('Successfully', 200,)); })
-        .catch((error) => { return next(new errorHandler(error.message, 400,)); })
 
-    })
   },
 
 
@@ -78,20 +83,20 @@ const DataVehicle = {
   featured: async (req, resp, next) => {
 
     const vehicle = await Vehicle.findById({ _id: req.params.id });
-console.log(vehicle)
+    console.log(vehicle)
 
-    Vehicle.findByIdAndUpdate(req.params.id , { featured: !vehicle.featured },)
+    Vehicle.findByIdAndUpdate(req.params.id, { featured: !vehicle.featured },)
       .then(() => { return next(new errorHandler('Sucessfully', 200)); })
       .catch((error) => { return next(new errorHandler(error.message, 400)); });
 
   },
 
-   // View Featured
-   viewFeatured: async (req, resp, next) => {
+  // View Featured
+  viewFeatured: async (req, resp, next) => {
 
 
 
-    Vehicle.find({featured : true}).populate('dealer_id').populate(['feature_id']).exec()
+    Vehicle.find({ featured: true }).populate('dealer_id').populate(['feature_id']).exec()
       .then((data) => { return next(new errorHandler(data, 200)); })
       .catch((error) => { return next(new errorHandler("Something Went wrong", 400)); });
 

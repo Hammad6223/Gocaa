@@ -12,7 +12,7 @@ import Joi from "joi";
 
     try{
     
-   const vehicle =  await Vehicle.find({featured: true}).populate(['feature_id']).exec();
+   const vehicle =  await Vehicle.find({featured: true}).populate(['feature_id']).select('-dealer_id').exec();
    const service  = await Service.find({}).exec();
    const package_detail = await Package.find({}).populate({path : 'vehicle_id' ,populate: { path: 'feature_id',    model: 'Feature'}}).populate('service_id').exec()
 
@@ -33,6 +33,7 @@ import Joi from "joi";
 
   Home2: async  (req,resp,next)=>{
 
+    return next(new errorHandler(req.body, 200)); 
       //Validation
       const CartSchema = Joi.object({
      
@@ -64,7 +65,7 @@ import Joi from "joi";
 
     await Vehicle.find({
       $nor: [{ _id: { $in: cartVehicleIds } }, { _id: { $in: pkgVehicleIds } }]
-    }).populate('dealer_id')
+    }).select('-dealer_id').populate(['feature_id'])
       .then((data) => { return next(new errorHandler(data, 200)); })
       .catch((error) => { return next(new errorHandler("Something Went wrong", 400)); });
 
