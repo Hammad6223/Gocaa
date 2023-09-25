@@ -32,7 +32,7 @@ import Joi from "joi";
 
 
   Home2: async  (req,resp,next)=>{
-    resp.status(200).json({error: req.body });  
+    resp.status(200).send( req.body );  
     // return next(new errorHandler(req.body, 200)); 
       //Validation
       const CartSchema = Joi.object({
