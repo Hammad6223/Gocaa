@@ -21,9 +21,9 @@ app.get("/", (req, res) => {res.send("<h1>Hello to Gocality App API</h1>");  });
 // Auth Routes 
 app.use('/auth', auth);
 
-app.use('/admin', admin);
+// app.use('/admin', admin);
 
-app.use('/user', user);
+// app.use('/user', user);
 
 
 
