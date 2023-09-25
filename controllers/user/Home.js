@@ -32,8 +32,8 @@ import Joi from "joi";
 
 
   Home2: async  (req,resp,next)=>{
-
-    return next(new errorHandler(req.body, 200)); 
+    resp.status(200).json({error: req.body });  
+    // return next(new errorHandler(req.body, 200)); 
       //Validation
       const CartSchema = Joi.object({
      
