@@ -9,8 +9,8 @@ const DataVehicle = {
   
 
   addVehicle: async (req, resp, next) => {
-console.log(req.files)
-    
+
+    console.log(req.files)
 
     if (!req.files || req.files.length === 0) { return next(new errorHandler('one image is required', 400)); }
 
@@ -38,26 +38,21 @@ console.log(req.files)
 
     let paths = [];
 
-    try {
-      for (let i = 0; i < req.files.length; i++) {
-        const result = await cloudinary.v2.uploader.upload(req.files[i].path, { folder: "Gocaltity" });
-        paths.push(result.public_id);
+    for (var i = 0; i < req.files.length; i++) {
+    await cloudinary.v2.uploader.upload(req.files[i].path, { folder: "Gocaltity" }, async (error, result) => {
+
+
+        if (error) { return next(new errorHandler(error, 400,)); }
+        paths.push(result.public_id)
         await fs.remove(req.files[i].path);
-      }
-    
-      // Create a new Vehicle instance with the image paths
-      const vehicle = new Vehicle({
-        ...req.body,
-        image: paths,
-        feature_id: JSON.parse(req.body.feature_id)
-      });
-    
-      await vehicle.save();
-    
-      return next(new errorHandler('Successfully', 200));
-    } catch (error) {
-      return next(new errorHandler(error.message, 400));
+
+      })
     }
+
+    new Vehicle({ ...req.body, image: paths, feature_id: JSON.parse(req.body.feature_id) })
+      .save().then(() => { return next(new errorHandler('Successfully', 200,)); })
+      .catch((error) => { return next(new errorHandler(error.message, 400,)); })
+
 
   },
 
