@@ -41,7 +41,7 @@ import Joi from "joi";
         endDate: Joi.string().required(),
       });
     console.log(req.body.endDate)
-    return next(new errorHandler(req.body, 200)); 
+   
       // Validation Error Show
       const { error } = CartSchema.validate(req.body);
       if (error) { return next(new errorHandler(error.message, 400,)); }
