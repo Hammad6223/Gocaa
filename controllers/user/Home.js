@@ -3,10 +3,12 @@ import errorHandler from "../../utills/errorhandler.js";
 import Vehicle from "../../models/vehicle.js";
 import Service from '../../models/service.js'
 import Package from "../../models/package.js";
+import cart from "../../models/cart.js";
+import Joi from "joi";
+  
+    const Home = {
 
-
-   const Home= async  (req,resp,next)=>{
-
+     Home1 :async  (req,resp,next)=>{
 
     try{
     
@@ -26,7 +28,49 @@ import Package from "../../models/package.js";
   catch(error){ return next(new errorHandler(error.message, 400));  }
 
       
+  },
+
+
+  Home2: async  (req,resp,next)=>{
+
+      //Validation
+      const CartSchema = Joi.object({
+     
+        startDate: Joi.string().required(),
+        endDate: Joi.string().required(),
+      });
+    console.log(req.body.endDate)
+    
+      // Validation Error Show
+      const { error } = CartSchema.validate(req.body);
+      if (error) { return next(new errorHandler(error.message, 400,)); }
+
+    const cartUpdate = await cart.find({
+      status: { $ne: 'approved' },
+      $and: [
+        { startDate: { $gt: req.body.startDate } },
+        { endDate: { $lt: req.body.endDate } }
+      ]
+    });
+    console.log(cartUpdate)
+
+    const pkg = await Package.find({});
+  
+
+    // Extract vehicle_id arrays from the cartUpdate and pkg results
+    const cartVehicleIds = cartUpdate.map(item => item.vehicle_id);
+    const pkgVehicleIds = pkg.map(item => item.vehicle_id);
+  
+
+    await Vehicle.find({
+      $nor: [{ _id: { $in: cartVehicleIds } }, { _id: { $in: pkgVehicleIds } }]
+    }).populate('dealer_id')
+      .then((data) => { return next(new errorHandler(data, 200)); })
+      .catch((error) => { return next(new errorHandler("Something Went wrong", 400)); });
+
   }
 
+
+    }
 
     export default Home

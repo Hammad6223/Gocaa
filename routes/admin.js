@@ -55,6 +55,7 @@ router.get('/view_service' , auth, authorizeRoles("admin"), DataService.ViewServ
 router.post('/add_package' , auth, authorizeRoles("admin"),  upload.single('image') , DataPackage.addPackage);
 router.get('/view_package' , auth, authorizeRoles("admin"), DataPackage.viewPackage );
 router.get('/detail_package/:id' , auth, authorizeRoles("admin"), DataPackage.detailPackage );
+router.get('/show_package_vehicle' , auth, authorizeRoles("admin"), DataPackage.ShowPackageVehicle);
 //  End Package Section
 
 

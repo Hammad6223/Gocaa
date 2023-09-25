@@ -14,7 +14,8 @@ router.post('/edit_profile_image' , auth, authorizeRoles("user"),  upload.single
 
 
 // Home
-router.get('/home' ,auth, authorizeRoles("user"), Home );
+router.get('/home' ,auth, authorizeRoles("user"), Home.Home1 );
+router.get('/home2' ,auth, authorizeRoles("user"),Home.Home2 );
 
 // Search
 router.get('/search' ,auth, authorizeRoles("user"), Search );
