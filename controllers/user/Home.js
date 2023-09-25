@@ -32,8 +32,8 @@ import Joi from "joi";
 
 
   Home2: async  (req,resp,next)=>{
-    resp.status(200).send( req.body );  
-    // return next(new errorHandler(req.body, 200)); 
+  
+    
       //Validation
       const CartSchema = Joi.object({
      
@@ -41,7 +41,7 @@ import Joi from "joi";
         endDate: Joi.string().required(),
       });
     console.log(req.body.endDate)
-    
+    return next(new errorHandler(data, 200)); 
       // Validation Error Show
       const { error } = CartSchema.validate(req.body);
       if (error) { return next(new errorHandler(error.message, 400,)); }
