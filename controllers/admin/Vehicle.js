@@ -10,6 +10,49 @@ const DataVehicle = {
 
   addVehicle: async (req, resp, next) => {
 
+    console.log(req.files)
+
+    if (!req.files || req.files.length === 0) { return next(new errorHandler('one image is required', 400)); }
+
+    //Validation
+    const VehicleSchema = Joi.object({
+      title: Joi.string().required(),
+      category: Joi.string().required(),
+      registrationNumber: Joi.string().required(),
+      color: Joi.string().required(),
+      modal: Joi.string().required(),
+      make: Joi.string().required(),
+      variant: Joi.string().required(),
+      price: Joi.number().required(),
+      engineCapacity: Joi.number().required(),
+      transmission: Joi.string().required(),
+      favourite: Joi.boolean(),
+      dealer_id: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
+
+    }).unknown();
+
+
+    // Validation Error Show
+    const { error } = VehicleSchema.validate(req.body);
+    if (error) { return next(new errorHandler(error.message, 400,)); }
+
+    let paths = [];
+
+    for (var i = 0; i < req.files.length; i++) {
+    await cloudinary.v2.uploader.upload(req.files[i].path, { folder: "Gocaltity" }, async (error, result) => {
+
+
+        if (error) { return next(new errorHandler(error, 400,)); }
+        paths.push(result.public_id)
+        await fs.remove(req.files[i].path);
+
+      })
+    }
+
+    new Vehicle({ ...req.body, image: paths, feature_id: JSON.parse(req.body.feature_id) })
+      .save().then(() => { return next(new errorHandler('Successfully', 200,)); })
+      .catch((error) => { return next(new errorHandler(error.message, 400,)); })
+
 
   },
 
