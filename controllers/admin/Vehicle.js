@@ -36,24 +36,31 @@ const DataVehicle = {
     const { error } = VehicleSchema.validate(req.body);
     if (error) { return next(new errorHandler(error.message, 400,)); }
 
-    let paths = [];
-
-    for (var i = 0; i < req.files.length; i++) {
-    await cloudinary.v2.uploader.upload(req.files[i].path, { folder: "Gocaltity" }, async (error, result) => {
-
-
-        if (error) { return next(new errorHandler(error, 400,)); }
-        paths.push(result.public_id)
+    try {
+      const paths = [];
+  
+      for (let i = 0; i < req.files.length; i++) {
+        const result = await cloudinary.v2.uploader.upload(req.files[i].path, {
+          folder: "Gocaltity"
+        });
+  
+        paths.push(result.public_id);
         await fs.remove(req.files[i].path);
-
-      })
+      }
+  
+      const newVehicle = new Vehicle({
+        ...req.body,
+        image: paths,
+        feature_id: JSON.parse(req.body.feature_id)
+      });
+  
+      await newVehicle.save();
+      
+      return next(new errorHandler('Successfully', 200));
+    } catch (error) {
+      console.log(error)
+      return next(new errorHandler(error.message, 400));
     }
-
-    new Vehicle({ ...req.body, image: paths, feature_id: JSON.parse(req.body.feature_id) })
-      .save().then(() => { return next(new errorHandler('Successfully', 200,)); })
-      .catch((error) => { return next(new errorHandler(error.message, 400,)); })
-
-
   },
 
 
