@@ -4,7 +4,7 @@ import {auth,authorizeRoles} from '../middleware/auth.js';
 import { upload } from '../utills/constant.js';
 
 import Order from '../controllers/user/Order.js';
-import {DataProfile, Home,Search,Reservation,NotificationData,Payment} from '../controllers/user/index.js';
+import {DataProfile, Home,Search,Reservation,NotificationData} from '../controllers/user/index.js';
 
 // Profile
 router.get('/profile' ,auth, authorizeRoles("user"), DataProfile.viewProfile );
@@ -15,7 +15,7 @@ router.post('/edit_profile_image' , auth, authorizeRoles("user"),  upload.single
 
 // Home
 router.get('/home' ,auth, authorizeRoles("user"), Home.Home1 );
-router.get('/home2' ,auth, authorizeRoles("user"),Home.Home2 );
+router.post('/home2' ,auth, authorizeRoles("user"),Home.Home2 );
 
 // Search
 router.get('/search' ,auth, authorizeRoles("user"), Search );
@@ -31,7 +31,7 @@ router.get('/cancel_order' ,auth, authorizeRoles("user"),Order.cancel );
 router.post('/order_payment' ,auth, authorizeRoles("user"),Order.orderpayment );
 
 
-router.post('/payment-sheet' ,auth, authorizeRoles("user"),Payment );
+// router.post('/payment-sheet' ,auth, authorizeRoles("user"),Payment );
 
 
 router.get('/check_notification' ,auth, authorizeRoles("user"),Order.notification );
