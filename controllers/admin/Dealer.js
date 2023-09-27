@@ -57,7 +57,7 @@ const DataDealer = {
   // View Dealer
   ViewDealer: async (req, resp, next) => {
 
-    await Dealer.find({}).exec()
+    await Dealer.find({}).sort({ createdAt: -1 }).exec()
       .then((data) => { return next(new errorHandler(data, 200)); })
       .catch((error) => { return next(new errorHandler("Something Went wrong", 400)); });
 
@@ -66,7 +66,7 @@ const DataDealer = {
   // Edit Dealer
   editDealer: async (req, resp, next) => {
 
-    console.log(req.params.id)
+    console.log(req.files)
     //Validation
     const registerSchema = Joi.object({
       firstName: Joi.string().required(),
@@ -91,11 +91,14 @@ const DataDealer = {
 
     const existingUser = await Dealer.findById(req.params.id);
     // Destroy old image             
-    if (existingUser.image) { cloudinary.uploader.destroy(existingUser.image) }
+    if (existingUser.image) { 
+      console.log()
+      cloudinary.uploader.destroy(existingUser.image) }
     if (existingUser.companyLogo) { cloudinary.uploader.destroy(existingUser.companyLogo) }
 
     //  Image validation
     if (req.files.image) {
+
       const image = await cloudinary.v2.uploader.upload(req.files['image'][0].path, { folder: "Gocaltity" });
       if (image) { req.body.image = image.public_id }
       // delete multer image
@@ -117,15 +120,10 @@ const DataDealer = {
       .then((data) => { return next(new errorHandler('succesfully', 200)); })
       .catch((error) => { return next(new errorHandler(error.message, 400)); });
   },
-
-
-
-
   // Detail Dealer
   DetailDealer: async (req, resp, next) => {
 
     try {
-
       const dealer = await Dealer.findById({ _id: req.params.id }).exec();
       const vehicle = await Vehicle.find({ dealer_id: req.params.id }).populate(['feature_id']).exec();
 

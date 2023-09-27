@@ -66,7 +66,7 @@ const DataPackage = {
 
 
 
-    Package.find({}).populate({ path: 'vehicle_id', populate: { path: 'feature_id', model: 'Feature' } }).populate('service_id').exec()
+    Package.find({}).populate({ path: 'vehicle_id', populate: { path: 'feature_id', model: 'Feature' } }).populate('service_id').sort({ createdAt: -1 }).exec()
       .then((data) => { return next(new errorHandler(data, 200)); })
       .catch((error) => { return next(new errorHandler("Something Went wrong", 400)); });
 
@@ -89,12 +89,12 @@ const DataPackage = {
 
     const cartUpdate = await cart.find({ status: { $ne: 'approved' } });
     const pkg = await Package.find({});
-  
+
 
     // Extract vehicle_id arrays from the cartUpdate and pkg results
     const cartVehicleIds = cartUpdate.map(item => item.vehicle_id);
     const pkgVehicleIds = pkg.map(item => item.vehicle_id);
-  
+
 
     await Vehicle.find({
       $nor: [{ _id: { $in: cartVehicleIds } }, { _id: { $in: pkgVehicleIds } }]

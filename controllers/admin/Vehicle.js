@@ -69,7 +69,7 @@ const DataVehicle = {
 
 
 
-    Vehicle.find({}).populate('dealer_id').populate(['feature_id']).exec()
+    Vehicle.find({}).populate('dealer_id').populate(['feature_id']).sort({ createdAt: -1 }).exec()
       .then((data) => { return next(new errorHandler(data, 200)); })
       .catch((error) => { return next(new errorHandler("Something Went wrong", 400)); });
 
