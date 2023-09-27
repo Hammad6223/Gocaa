@@ -1,5 +1,5 @@
 
-import stripe from "stripe";
+import Stripe from "stripe";
 import Cart from "../../models/cart.js";
 import User from '../../models/user.js'
 
@@ -9,7 +9,7 @@ import User from '../../models/user.js'
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
 
 // Now you can use `stripeSecretKey` in your Stripe client setup
-const stripeClient = stripe(stripeSecretKey);
+const stripeClient = Stripe(stripeSecretKey);
 
 const Payment = async (req, resp, next) => {
   const { amount, currency ,order_id} = req.body;
