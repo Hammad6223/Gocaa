@@ -8,6 +8,7 @@ import User from '../../models/user.js'
 // Access the Stripe secret key from the environment variables
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
 
+
 // Now you can use `stripeSecretKey` in your Stripe client setup
 const stripeClient = Stripe(stripeSecretKey);
 
