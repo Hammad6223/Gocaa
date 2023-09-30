@@ -4,8 +4,9 @@ import User from '../../models/user.js'
 import Joi from "joi";
 import transaction from "../../models/transaction.js";
 import errorHandler from "../../utills/errorhandler.js";
-
+import { config } from 'dotenv';
 import  Stripe  from 'stripe';
+config(); 
 
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
 
