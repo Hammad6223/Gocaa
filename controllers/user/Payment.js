@@ -5,13 +5,12 @@ import Joi from "joi";
 import transaction from "../../models/transaction.js";
 import errorHandler from "../../utills/errorhandler.js";
 
-import Stripe from "stripe";
-// Access the Stripe secret key from the environment variables
+import {loadStripe} from '@stripe/stripe-js';
+
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
 
+const stripeClient = await loadStripe(stripeSecretKey);
 
-// Now you can use `stripeSecretKey` in your Stripe client setup
-const stripeClient = Stripe(stripeSecretKey);
 
 const Payment = {
 
