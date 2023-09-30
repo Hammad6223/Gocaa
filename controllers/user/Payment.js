@@ -5,21 +5,21 @@ import Joi from "joi";
 import transaction from "../../models/transaction.js";
 import errorHandler from "../../utills/errorhandler.js";
 
-import { Stripe } from 'stripe';
+import  Stripe  from 'stripe';
 
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
 
 // Initialize Stripe with your secret key
-const stripeClient  = new Stripe(stripeSecretKey, {
-  apiVersion: '2020-08-27', // Replace with your desired API version
-});
+// const stripeClient  = new Stripe(stripeSecretKey, {
+//   apiVersion: '2020-08-27', // Replace with your desired API version
+// });
 
 // Access the Stripe secret key from the environment variables
 // const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
 
 
 // Now you can use `stripeSecretKey` in your Stripe client setup
-// const stripeClient = Stripe(stripeSecretKey);
+const stripeClient = Stripe(stripeSecretKey);
 
 const Payment = {
 
