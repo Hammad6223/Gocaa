@@ -80,6 +80,8 @@ router.post('/booking/:id' , auth, authorizeRoles("admin"), DataBooking.booking 
 router.post('/package_booking/:id' , auth, authorizeRoles("admin"), DataBooking.packageBooking );
 router.get('/view_booking' , auth, authorizeRoles("admin"), DataBooking.viewBooking );
 router.get('/view_package_booking' , auth, authorizeRoles("admin"), DataBooking.viewPackageBooking );
+
+router.get('/transaction' , auth, authorizeRoles("admin"), DataBooking.transaction );
 //  End Booking Section
 
 

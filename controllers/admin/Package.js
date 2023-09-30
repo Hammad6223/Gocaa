@@ -35,6 +35,8 @@ const DataPackage = {
     //    Discount Calcualte
     const vehicles = await Vehicle.find(({ _id: { $in: req.body.vehicle_id } })).exec();
     const services = await Service.find(({ _id: { $in: req.body.service_id } })).exec();
+
+    
     let vehicleSum = 0; let serviceSum = 0; let totalprice = 0;
     for (const vehicle of vehicles) { vehicleSum += vehicleSum + vehicle.price }
     for (const service of services) { serviceSum += serviceSum + service.price }

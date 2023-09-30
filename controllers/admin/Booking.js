@@ -8,6 +8,7 @@ import Cart from "../../models/cart.js";
 import packageBooking from "../../models/packageBooking.js";
 
 import packageBookingData from '../../models/packageBookingData.js'
+import transaction from "../../models/transaction.js";
 const DataBooking = {
 
   // View Resveration
@@ -149,6 +150,14 @@ const DataBooking = {
         .catch((error) => { return next(new errorHandler("Something Went wrong", 400)); });
     },
 
+
+    transaction: async (req, resp, next) => {
+
+      await transaction.find({}).populate('orderId').populate('user_id').exec()
+        .then((data) => { return next(new errorHandler(data, 200)); })
+        .catch((error) => { return next(new errorHandler(error.message, 400)); });
+  
+    },
 
 
 }

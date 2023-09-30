@@ -11,8 +11,10 @@ const Home = {
   Home1: async (req, resp, next) => {
 
     try {
+      const pkg = await Package.find({});
+      const pkgVehicleIds = pkg.map(item => item.vehicle_id);
 
-      const vehicle = await Vehicle.find({ featured: true }).populate(['feature_id']).select('-dealer_id').exec();
+      const vehicle = await Vehicle.find({ featured: true , _id: { $nin: pkgVehicleIds } }).populate(['feature_id']).select('-dealer_id').exec();
       const service = await Service.find({}).exec();
       const package_detail = await Package.find({}).populate({ path: 'vehicle_id', populate: { path: 'feature_id', model: 'Feature' } }).populate('service_id').exec()
 
@@ -47,7 +49,7 @@ const Home = {
     if (error) { return next(new errorHandler(error.message, 400,)); }
 
     const cartUpdate = await cart.find({
-      status: { $ne: 'approved' },
+      status:  {  $in :  "onBoarding" },
       $and: [
         { startDate: { $gte: req.body.startDate } },
         { endDate: { $lte: req.body.endDate } }
@@ -84,5 +86,6 @@ const Home = {
   }
 
 }
+
 
 export default Home

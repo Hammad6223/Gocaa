@@ -31,7 +31,8 @@ router.get('/cancel_order' ,auth, authorizeRoles("user"),Order.cancel );
 router.post('/order_payment' ,auth, authorizeRoles("user"),Order.orderpayment );
 
 
-router.post('/payment-sheet' ,auth, authorizeRoles("user"),Payment );
+router.post('/payment-sheet' ,auth, authorizeRoles("user"),Payment.sheet );
+router.post('/transaction' ,auth, authorizeRoles("user"),Payment.transaction );
 
 
 router.get('/check_notification' ,auth, authorizeRoles("user"),Order.notification );
