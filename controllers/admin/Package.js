@@ -89,7 +89,7 @@ const DataPackage = {
 
   ShowPackageVehicle: async (req, resp, next) => {
 
-    const cartUpdate = await cart.find({ status: { $ne: 'approved' } });
+    const cartUpdate = await cart.find({ status: { $ne: 'approved , rejected' } });
     const pkg = await Package.find({});
 
 
