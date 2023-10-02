@@ -9,6 +9,7 @@ import packageBooking from "../../models/packageBooking.js";
 
 import packageBookingData from '../../models/packageBookingData.js'
 import transaction from "../../models/transaction.js";
+import QrCode from "./QrCode.js";
 const DataBooking = {
 
   // View Resveration
@@ -16,12 +17,19 @@ const DataBooking = {
     console.log(req.body)
     
     const res = await Cart.findById(req.params.id).exec();
-    console.log(res)
+    // console.log(res)
 
+
+    // Car booking duplicate check
+    const vehicle_Check = await Booking.find({
+      vehicle_id: req.body.vehicle_id,  $and: [  { startDate: { $gte: res.startDate } },  { endDate: { $lte: res.endDate } }] });
+     
+if(vehicle_Check.length  ==1  ) {return next(new errorHandler('Vehicle Can not free', 400));  }
    
     const data = await Booking.find({
       driver_id: req.body.driver_id,  $and: [  { startDate: { $gte: res.startDate } },  { endDate: { $lte: res.endDate } }] });
      console.log('1111111111',data)
+
       const checkBookingData = await packageBookingData.find({
         driver_id: req.body.driver_id,
         $and: [
@@ -32,8 +40,11 @@ const DataBooking = {
 
       console.log('22222222222',checkBookingData)
     if(data.length === 0  && checkBookingData.length ===0) {
-    new Booking({ ...req.body, cart_id:req.params.id,startDate:res.startDate ,endDate:res.endDate })
+     const publicpath = await QrCode(req.params.id , req.body.vehicle_id,req.body.driver_id  )
+    
+    new Booking({ ...req.body,qrCodeImage :publicpath, cart_id:req.params.id,startDate:res.startDate ,endDate:res.endDate })
     .save().then( (data) =>{
+
       Cart.findByIdAndUpdate( req.params.id,   { $push: { booking_id: data._id } }, { runValidators: true }, )
       .then( () =>{ return next(new errorHandler('Successfully', 200)); })
       .catch((error) =>{return next(new errorHandler(error.message, 400));  }); 
@@ -54,9 +65,16 @@ const DataBooking = {
   packageBooking: async (req, resp, next) => {
 
     console.log(req.body)
+       // Car booking duplicate check
+       const cart = await Cart.findById(req.body.cart_id).exec();
+
+       const vehicle_Check = await packageBookingData.find({
+        vehicle_id: req.body.vehicle_id,  $and: [  { startDate: { $gte: cart.startDate } },  { endDate: { $lte: cart.endDate } }] });
+       console.log(vehicle_Check)
+  if(vehicle_Check.length  === 1 ) {return next(new errorHandler('Vehicle Can not free', 400));  }
   
     try {
-      const cart = await Cart.findById(req.body.cart_id).exec();
+      
     
       // Find bookings and package bookings that overlap with the cart's date range
       const bookingData = await Booking.find({
@@ -77,13 +95,16 @@ const DataBooking = {
     
       if (bookingData.length === 0 && checkBookingData.length === 0) {
         // Create a new package booking
-        const newPackageBooking = new packageBookingData({
+        const publicpath = await QrCode(req.body.cart_id , req.body.vehicle_id,req.body.driver_id  )
+   console.log(publicpath)
+            const newPackageBooking = new packageBookingData({
           vehicle_id: req.body.vehicle_id,
           startDate: cart.startDate,
           endDate: cart.endDate,
           driver_id: req.body.driver_id,
           cart_id:req.body.cart_id,
           package_id: req.params.id,
+          qrCodeImage :publicpath
         });
     
         const data1 = await newPackageBooking.save();
@@ -125,7 +146,7 @@ const DataBooking = {
     }
     
     
-
+      
 
   
     

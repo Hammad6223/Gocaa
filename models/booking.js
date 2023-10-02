@@ -11,6 +11,7 @@ const bookingSchema = new Schema({
     cart_id: { type: mongoose.Schema.Types.ObjectId,  ref:'Cart' ,required:true},
     driver_id:{ type: mongoose.Schema.Types.ObjectId,  ref:'Driver',required:true },
     package_id:{ type: mongoose.Schema.Types.ObjectId,  ref:'Package'},
+    qrCodeImage: { type: String},
    
 }, {timestamps: true});
 

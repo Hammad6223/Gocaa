@@ -50,7 +50,7 @@ const Home = {
 
     const cartUpdate = await cart.find({
       status:  {  $in :  "onBoarding" },
-      $and: [
+      $or: [
         { startDate: { $gte: req.body.startDate } },
         { endDate: { $lte: req.body.endDate } }
       ]
